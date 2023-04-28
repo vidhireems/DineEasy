@@ -1,0 +1,26 @@
+{
+  "name": "dineeasy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.16.2",
+    "mongodb": "^5.3.0",
+    "mongoose": "^7.1.0",
+    "typescript": "^5.0.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vidhireems/DineEasy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vidhireems/DineEasy/issues"
+  },
+  "homepage": "https://github.com/vidhireems/DineEasy#readme"
+}
