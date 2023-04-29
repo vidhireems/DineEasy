@@ -39,10 +39,15 @@ class RestaurantModel {
         this.model = mongooseConnection.model<IRestaurantModel>("restaurant", this.schema);
     }
 
-    public retrieveAllRestaurants(response:any): any {
-        var query = this.model.find({});
-        query.exec( (err :any, itemArray :any) => {
-            response.json(itemArray) ;
-        });
+    public async retrieveAllRestaurants(response: any): Promise<any> {
+        try {
+            const itemArray = await this.model.find().exec();
+            response.json(itemArray);
+        } catch (err) {
+            console.error(err);
+            response.sendStatus(500);
+        }
     }
 }
+
+export {RestaurantModel};
