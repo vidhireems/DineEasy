@@ -1,11 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DbConnection = void 0;
+//Imports 
 var mongoose_1 = require("mongoose");
+//DbConnection helps in connecting to Mongodb 
 var DbConnection = /** @class */ (function () {
     function DbConnection() {
-        DbConnection.connect();
+        // DbConnection.connect();
     }
+    //function to connect to Mongo Db 
     DbConnection.connect = function () {
         if (this.mongooseInstance)
             return this.mongooseInstance;
@@ -16,7 +19,7 @@ var DbConnection = /** @class */ (function () {
         this.mongooseInstance = mongoose_1.default.connect(this.DB_CONNECTION_STRING);
         return this.mongooseInstance;
     };
-    DbConnection.DB_CONNECTION_STRING = 'mongodb://dbAdmin:test@localhost:27017/dineEasy?authSource=admin';
+    DbConnection.DB_CONNECTION_STRING = 'mongodb://dbAdmin:test@127.0.0.1:27017/dineEasy?authSource=admin';
     return DbConnection;
 }());
 exports.DbConnection = DbConnection;
