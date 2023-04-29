@@ -4,11 +4,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DbConnection = void 0;
+//Imports 
 const mongoose_1 = __importDefault(require("mongoose"));
+//DbConnection helps in connecting to Mongodb 
 class DbConnection {
     constructor() {
         DbConnection.connect();
     }
+    //function to connect to Mongo Db 
     static connect() {
         if (this.mongooseInstance)
             return this.mongooseInstance;
