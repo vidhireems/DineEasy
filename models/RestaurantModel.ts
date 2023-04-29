@@ -44,6 +44,17 @@ class RestaurantModel {
     public createModel(): void {
         this.model = mongooseConnection.model<IRestaurantModel>("restaurant", this.schema);
     }
+    
+     // function for retriving all the restaurants(have to use promise after mongoose version 6)
+     public async retrieveAllRestaurants(response: any): Promise<any> {
+        try {
+            const itemArray = await this.model.find().exec();
+            response.json(itemArray);
+        } catch (err) {
+            console.error(err);
+            response.sendStatus(500);
+        }
+    }
 }
 
 export {RestaurantModel};
