@@ -1,4 +1,0 @@
-watch video https://www.youtube.com/watch?v=fgTGADljAeg&t=243s
-create mongodb schema
-create model
-create route to specific pages and return a json response
