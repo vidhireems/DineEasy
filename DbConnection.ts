@@ -1,5 +1,7 @@
+//Imports 
 import Mongoose from 'mongoose';
 
+//DbConnection helps in connecting to Mongodb 
 class DbConnection {
     static mongooseInstance: any;
     static mongooseConnection: Mongoose.Connection;
@@ -9,6 +11,7 @@ class DbConnection {
         DbConnection.connect();
     }
     
+    //function to connect to Mongo Db 
     static connect (): Mongoose.Connection {
         if(this.mongooseInstance) return this.mongooseInstance;
         
