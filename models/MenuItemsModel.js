@@ -36,55 +36,57 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RestaurantModel = void 0;
+exports.MenuItemsModel = void 0;
 //Imports
 var mongoose_1 = require("mongoose");
 var DbConnection_1 = require("../DbConnection");
 //Mongoose connections and object
 var mongooseConnection = DbConnection_1.DbConnection.mongooseConnection;
 var mongooseObj = DbConnection_1.DbConnection.mongooseInstance;
-//Class for restaurant model
-var RestaurantModel = /** @class */ (function () {
+//Class for menu model
+var MenuItemsModel = /** @class */ (function () {
     //constructor initilize the create schema and model
-    function RestaurantModel() {
+    function MenuItemsModel() {
         this.createSchema();
         this.createModel();
     }
-    //function to create the schema for restaurants
-    RestaurantModel.prototype.createSchema = function () {
+    //function to create the schema for Menu
+    MenuItemsModel.prototype.createSchema = function () {
         this.schema = new mongoose_1.default.Schema({
-            id: Number,
-            name: String,
-            image: String,
-            location: String,
-            rating: Number,
-            reviews: Number,
-            cost: String,
-            cuisines: String,
-            contact: String,
-            neighborhood: String,
-            hours: String,
-            parkingdetails: String,
-            isValetPark: Boolean,
-            numberOfTables: Number,
-        }, { collection: 'restaurant' });
+            menuId: Number,
+            restaurantId: Number,
+            menu: [
+                {
+                    category: String,
+                    name: String,
+                    price: String,
+                    is_veg: Boolean,
+                    ingredients: String,
+                }
+            ]
+        }, { collection: 'menuItems' });
     };
-    //function to create model for the reataurant interface and schema
-    RestaurantModel.prototype.createModel = function () {
-        this.model = mongooseConnection.model("restaurant", this.schema);
+    //function for create the model
+    MenuItemsModel.prototype.createModel = function () {
+        this.model = mongooseConnection.model("menuItems", this.schema);
     };
-    // function for retriving all the restaurants(have to use promise after mongoose version 6)
-    RestaurantModel.prototype.retrieveAllRestaurants = function (response) {
+    // function for retrieving all the menu items in a restaurant menu
+    MenuItemsModel.prototype.retrieveMenuItems = function (response, filter) {
         return __awaiter(this, void 0, void 0, function () {
             var itemArray, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.model.find().exec()];
+                        return [4 /*yield*/, this.model.find(filter).exec()];
                     case 1:
                         itemArray = _a.sent();
-                        response.json(itemArray);
+                        if (itemArray.length == 0) {
+                            response.sendStatus(404);
+                        }
+                        else {
+                            response.json(itemArray);
+                        }
                         return [3 /*break*/, 3];
                     case 2:
                         err_1 = _a.sent();
@@ -96,6 +98,6 @@ var RestaurantModel = /** @class */ (function () {
             });
         });
     };
-    return RestaurantModel;
+    return MenuItemsModel;
 }());
-exports.RestaurantModel = RestaurantModel;
+exports.MenuItemsModel = MenuItemsModel;
