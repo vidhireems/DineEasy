@@ -17,22 +17,10 @@ class OrderModel {
   public createSchema(): void {
     this.schema = new Mongoose.Schema(
       {
-        name: {
-          type: String,
-          required: true,
-        },
-        quantity: {
-          type: String,
-          required: true,
-        },
-        itemName: {
-          type: [String],
-          required: true,
-        },
-        price: {
-          type: Number,
-          required: false,
-        },
+        // id: Number,
+        name: String,
+        quantity: Number,
+        itemName: String,
       },
       { collection: "order", timestamps: true }
     );
@@ -42,14 +30,21 @@ class OrderModel {
     this.model = mongooseConnection.model<IOrderModel>("order", this.schema);
   }
 
-  public async makeOrder(request: any, response: any): Promise<any> {
+  public async createOrder(request: any, response: any): Promise<any> {
     try {
-      const { name, quantity, itemName, price } = request.body;
-      const order = new this.model({ name, quantity, itemName, price });
+      const { name, quantity, itemName } = request.body;
+      if (!name || !quantity || !itemName) {
+        return response.status(400).json({ message: "Please fill all fields" });
+      }
+      const order = new this.model({ name, quantity, itemName });
       await order.save();
-      response.status(200).json(order);
-    } catch (err) {
-      console.error(err);
+      response.status(200).json({
+        message: "Order placed successfully",
+        order,
+      });
+    } catch (error) {
+      console.error(error);
+      console.log(error);
       response.sendStatus(500);
     }
   }

@@ -36,12 +36,13 @@ class App {
         this.expressApp = express();
         this.Restaurants = new RestaurantModel_1.RestaurantModel();
         this.Orders = new OrderModel_1.OrderModel();
+        this.middleware();
         this.routes();
     }
     //configure the middleware of express application
     middleware() {
         this.expressApp.use(bodyParser.json());
-        this.expressApp.use(bodyParser.urlencoded({ extended: false }));
+        this.expressApp.use(bodyParser.urlencoded({ extended: true }));
     }
     //Api Endpoints....
     routes() {
@@ -52,9 +53,9 @@ class App {
             this.Restaurants.retrieveAllRestaurants(res);
         });
         // post order
-        router.post("/order", (req, res) => {
+        router.post("/orders", (request, response) => {
             console.log("Customer please make an order");
-            this.Orders.makeOrder(req, res);
+            this.Orders.createOrder(request, response);
         });
         this.expressApp.use("/", router);
     }
