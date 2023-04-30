@@ -9,7 +9,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 //DbConnection helps in connecting to Mongodb 
 class DbConnection {
     constructor() {
-        //DbConnection.connect(); //TODO: Consider removing this
+        DbConnection.connect(); //TODO: Consider removing this
     }
     //function to connect to Mongo Db 
     static connect() {
