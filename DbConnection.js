@@ -1,28 +1,26 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DbConnection = void 0;
 //Imports 
-const mongoose_1 = __importDefault(require("mongoose"));
+var mongoose_1 = require("mongoose");
 //DbConnection helps in connecting to Mongodb 
-class DbConnection {
-    constructor() {
-        //DbConnection.connect(); //TODO: Consider removing this
+var DbConnection = /** @class */ (function () {
+    function DbConnection() {
+        DbConnection.connect(); //TODO: Consider removing this
     }
     //function to connect to Mongo Db 
-    static connect() {
+    DbConnection.connect = function () {
         if (this.mongooseInstance)
             return this.mongooseInstance;
         this.mongooseConnection = mongoose_1.default.connection;
-        this.mongooseConnection.on("open", () => {
+        this.mongooseConnection.on("open", function () {
             console.log("Connected to mongodb.");
         });
         this.mongooseInstance = mongoose_1.default.connect(this.DB_CONNECTION_STRING);
         return this.mongooseInstance;
-    }
-}
+    };
+    DbConnection.DB_CONNECTION_STRING = 'mongodb://dbAdmin:test@127.0.0.1:27017/dineEasy?authSource=admin';
+    return DbConnection;
+}());
 exports.DbConnection = DbConnection;
-DbConnection.DB_CONNECTION_STRING = 'mongodb://dbAdmin:test@127.0.0.1:27017/dineEasy?authSource=admin';
 DbConnection.connect();

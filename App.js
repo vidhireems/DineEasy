@@ -1,55 +1,52 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
 //Imports
-const RestaurantModel_1 = require("./models/RestaurantModel");
-const express = require("express");
-const bodyParser = __importStar(require("body-parser"));
+var RestaurantModel_1 = require("./models/RestaurantModel");
+var MenuModel_1 = require("./models/MenuModel");
+var MenuItemsModel_1 = require("./models/MenuItemsModel");
+var express = require("express");
+var bodyParser = require("body-parser");
 //Class App which creates and configure the express application
-class App {
+var App = /** @class */ (function () {
     //Constructor which runs the configuration on the express application and calls the routes function
-    constructor() {
+    function App() {
         this.expressApp = express();
         this.Restaurants = new RestaurantModel_1.RestaurantModel();
+        this.Menu = new MenuModel_1.MenuModel();
+        this.MenuItems = new MenuItemsModel_1.MenuItemsModel();
         this.routes();
+        this.middleware();
     }
     //configure the middleware of express application
-    middleware() {
+    App.prototype.middleware = function () {
         this.expressApp.use(bodyParser.json());
         this.expressApp.use(bodyParser.urlencoded({ extended: false }));
-    }
+    };
     //Api Endpoints....
-    routes() {
-        let router = express.Router();
-        //Retrive all the restaurant endpoint
-        router.get('/restaurants', (req, res) => {
+    App.prototype.routes = function () {
+        var _this = this;
+        var router = express.Router();
+        //Retrieve all the restaurant endpoint
+        router.get('/restaurants', function (req, res) {
             console.log("Query all the restaurants");
-            this.Restaurants.retrieveAllRestaurants(res);
+            _this.Restaurants.retrieveAllRestaurants(res);
+        });
+        //Retrieve Menu
+        router.get('/restaurant/:restaurantId/menu', function (req, res) {
+            var restaurantId = req.params.restaurantId;
+            console.log('Query single menu with restid: ' + restaurantId);
+            _this.Menu.retrieveMenu(res, { restaurantId: restaurantId });
+        });
+        //Retrieve Menu Items
+        router.get('/restaurant/:restaurantId/menu/:menuId', function (req, res) {
+            var restaurantId = req.params.restaurantId;
+            var menuId = req.params.menuId;
+            console.log('Query single menu with restid: ' + restaurantId);
+            _this.MenuItems.retrieveMenuItems(res, { menuId: menuId, restaurantId: restaurantId });
         });
         this.expressApp.use('/', router);
-    }
-}
+    };
+    return App;
+}());
 exports.App = App;
