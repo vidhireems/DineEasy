@@ -1,9 +1,10 @@
-db = db.getSiblingDB('dineEasy')
-db.createCollection('restaurant')
-restaurantCollection = db.getCollection("restaurant")
-restaurantCollection.remove({})
-restaurantCollection.insert(
-    {
+const conn = new Mongo();
+db = conn.getDB('dineEasy');
+db.disableFreeMonitoring();
+restaurantCollection = db.getCollection('restaurant') || db.createCollection('restaurant').then(() => db.getCollection('restaurant'));
+restaurantCollection.deleteMany({})
+restaurantCollection.insertMany(
+    [{
         id: 1,
         name: "The Pink Door",
         image: "https://www.google.com/maps/place/The+Pink+Door/@47.6103652,-122.3425604,3a,75y,90t/data=!3m8!1e2!3m6!1sAF1QipNHbdQN3gFf5qZ7E5jSchhFbZmhsrEJpBUkXuRR!2e10!3e12!6shttps:%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipNHbdQN3gFf5qZ7E5jSchhFbZmhsrEJpBUkXuRR%3Dw447-h298-k-no!7i2048!8i1365!4m9!3m8!1s0x54906ab2ce0e56f7:0xbaad6a1dd096642a!8m2!3d47.6103652!4d-122.3425604!10e5!14m1!1BCgIgAQ!16s%2Fm%2F021jbrg",
@@ -18,10 +19,7 @@ restaurantCollection.insert(
         parkingdetails: "Public Pay Lot: The Pike Place Public Market Parking Garage - w/ easy access to the Market! Street parking is free after 8:00 p.m. M-F. Free on Sundays! Many Private Pay Lots nearby. ",
         isValetPark: true,
         numberOfTables: 20
-      }
-      
-)
-restaurantCollection.insert(
+    },
     {
         id: 2,
         name: "Terra Plata",
@@ -37,9 +35,7 @@ restaurantCollection.insert(
         parkingdetails: "There is street parking surrounding the restaurant and five parking lots located within two blocks of Terra Platae.",
         isValetPark: false,
         numberOfTables: 10,
-    }
-)
-restaurantCollection.insert(
+    },
     {
         id: 3,
         name: "Il Terrazzo Carmine",
@@ -55,9 +51,7 @@ restaurantCollection.insert(
         parkingdetails: "Onsite open parking space available.",
         isValetPark: true,
         numberOfTables: 15,
-    }
-)
-restaurantCollection.insert(
+    },
     {
         id: 4,
         name: "Cinque Terre Ristorante",
@@ -73,9 +67,7 @@ restaurantCollection.insert(
         parkingdetails: " ",
         isValetPark: false,
         numberOfTables: 7,
-    }
-)
-restaurantCollection.insert(
+    },
     {
         id: 5,
         name: "The George",
@@ -91,5 +83,5 @@ restaurantCollection.insert(
         parkingdetails: " Public Lot",
         isValetPark: true,
         numberOfTables: 10,
-    }
+    }]
 )
