@@ -62,5 +62,22 @@ class RestaurantModel {
             }
         });
     }
+    retrieveRestaurantDetails(response, filter) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const query = this.model.find(filter);
+            query.then((result) => {
+                if (result.length === 0) {
+                    console.error({ error: "Unable to find the Restaurant", });
+                    response.status(404).send({ error: "Unable to find the Restaurant" });
+                }
+                else {
+                    response.send(result);
+                }
+            }).catch((err) => {
+                console.error(err);
+                response.status(500).send({ error: err });
+            });
+        });
+    }
 }
 exports.RestaurantModel = RestaurantModel;

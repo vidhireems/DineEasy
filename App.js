@@ -49,6 +49,12 @@ class App {
             console.log("Query all the restaurants");
             this.Restaurants.retrieveAllRestaurants(res);
         });
+        //retrieve specific restaurant
+        router.get('/restaurants/:id', (req, res) => {
+            let id = req.params.id;
+            console.log('Query single restaurant with id: ' + id);
+            this.Restaurants.retrieveRestaurantDetails(res, { id: id });
+        });
         this.expressApp.use('/', router);
     }
 }
