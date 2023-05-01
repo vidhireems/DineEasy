@@ -17,10 +17,15 @@ class OrderModel {
   public createSchema(): void {
     this.schema = new Mongoose.Schema(
       {
-        // id: Number,
+        restaurantId: {
+          type: Mongoose.Schema.Types.ObjectId,
+          ref: "restaurant",
+        },
+        orderId: Number,
         name: String,
         quantity: Number,
         itemName: String,
+        //price
       },
       { collection: "order", timestamps: true }
     );
@@ -32,11 +37,17 @@ class OrderModel {
 
   public async createOrder(request: any, response: any): Promise<any> {
     try {
-      const { name, quantity, itemName } = request.body;
-      if (!name || !quantity || !itemName) {
+      const { restaurantId, orderId, name, quantity, itemName } = request.body;
+      if (!restaurantId || !orderId || !name || !quantity || !itemName) {
         return response.status(400).json({ message: "Please fill all fields" });
       }
-      const order = new this.model({ name, quantity, itemName });
+      const order = new this.model({
+        restaurantId,
+        orderId,
+        name,
+        quantity,
+        itemName,
+      });
       await order.save();
       response.status(200).json({
         message: "Order placed successfully",
@@ -48,6 +59,7 @@ class OrderModel {
       response.sendStatus(500);
     }
   }
+
 }
 
 export { OrderModel };

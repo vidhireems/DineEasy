@@ -24,37 +24,38 @@ class OrderModel {
     }
     createSchema() {
         this.schema = new mongoose_1.default.Schema({
-            // id: Number,
+            restaurantId: {
+                type: mongoose_1.default.Schema.Types.ObjectId,
+                ref: "restaurant",
+            },
+            orderId: Number,
             name: String,
             quantity: Number,
             itemName: String,
+            //price
         }, { collection: "order", timestamps: true });
     }
     createModel() {
         this.model = mongooseConnection.model("order", this.schema);
     }
-    // public async makeOrder(req: any, res: any): Promise<any> {
-    //   try {
-    //     const {  itemName,  } = req.body;
-    //     const order = new this.model( itemName, );
-    //     await order.save();
-    //     res.status(200).json(order);
-    //   } catch (err) {
-    //     console.error(err);
-    //     res.sendStatus(500);
-    //   }
-    // }
     createOrder(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { name, quantity, itemName } = request.body;
-                if (!name || !quantity || !itemName) {
+                const { restaurantId, orderId, name, quantity, itemName } = request.body;
+                if (!restaurantId || !orderId || !name || !quantity || !itemName) {
                     return response.status(400).json({ message: "Please fill all fields" });
                 }
-                const order = new this.model({ name, quantity, itemName, });
+                const order = new this.model({
+                    restaurantId,
+                    orderId,
+                    name,
+                    quantity,
+                    itemName,
+                });
                 yield order.save();
                 response.status(200).json({
-                    message: "Order placed successfully", order
+                    message: "Order placed successfully",
+                    order,
                 });
             }
             catch (error) {
