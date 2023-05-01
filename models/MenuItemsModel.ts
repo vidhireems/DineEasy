@@ -30,7 +30,7 @@ class MenuItemsModel {
                     {
                         category: String,
                         name: String,
-                        price: String,
+                        price: Number,
                         is_veg: Boolean,
                         ingredients: String,
                     }
