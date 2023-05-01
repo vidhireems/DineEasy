@@ -10,7 +10,7 @@ var authenticationDB = "admin";
 var database = "dineEasy";
 var collectionScriptDirectory = "CreateDb";
 var createUserFile = "adminDbUser.js";
-var updateCollectionFiles = ["createRestaurantData.js"];
+var updateCollectionFiles = ["createRestaurantData.js", "createMenuData.js"];
 // User with correct privilieges must be created before updating databases
 var pathToScript = path.join(collectionScriptDirectory, createUserFile);
 var command = "mongosh --host ".concat(host, " --port ").concat(port, " ").concat(authenticationDB, " ").concat(pathToScript);

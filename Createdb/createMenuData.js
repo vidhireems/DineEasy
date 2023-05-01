@@ -1,5 +1,6 @@
-db = db.getSiblingDB('dineEasy')
-
+const conn = new Mongo();
+db = conn.getDB('dineEasy');
+db.disableFreeMonitoring();
 menuCollection = db.getCollection('menu') || db.createCollection('menu').then(() => db.getCollection('menu'));
 menuCollection.deleteMany({})
 menuCollection.insertMany(
