@@ -62,5 +62,30 @@ class RestaurantModel {
             }
         });
     }
+    // public async retrieveRestaurantDetails(response:any, filter:Object): Promise<any> {
+    //     const query = this.model.find(filter);
+    //     query.then((result:any) => {
+    //         response.send(result);
+    //     }).catch((err:any) => {
+    //         console.error({ error: "Unable to Find the Restaurant with id" });
+    //         response.status(404).send({ error: 'Unable to Find the Restaurant with id' }); 
+    // });
+    retrieveRestaurantDetails(response, filter) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const query = this.model.find(filter);
+            query.then((result) => {
+                if (result.length === 0) {
+                    console.error({ error: "Unable to find the Restaurant", });
+                    response.status(404).send({ error: "Unable to find the Restaurant" });
+                }
+                else {
+                    response.send(result);
+                }
+            }).catch((err) => {
+                console.error(err);
+                response.status(500).send({ error: err });
+            });
+        });
+    }
 }
 exports.RestaurantModel = RestaurantModel;
