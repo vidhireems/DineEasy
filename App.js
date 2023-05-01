@@ -49,21 +49,6 @@ class App {
             console.log("Query all the restaurants");
             this.Restaurants.retrieveAllRestaurants(res);
         });
-        //Retrive all the restaurant endpoint
-        router.get('/restaurants/:id', (req, res) => {
-            let id = req.params.id;
-            console.log('Query single restaurant with id: ' + id);
-            this.Restaurants.retrieveRestaurantDetails(res, { id: id });
-        });
-        // router.get('/restaurant/:id', function(req, res) {
-        //     const id = req.params.id;
-        //     const restaurant = Restaurants.retrieveRestaurantDetails(id);
-        //     if (restaurant) {
-        //       res.send({ data: restaurant });
-        //     } else {
-        //       res.status(404).send({ error: 'Unable to Find the Restaurant with id' });
-        //     }
-        //   });
         this.expressApp.use('/', router);
     }
 }

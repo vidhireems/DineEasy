@@ -55,30 +55,6 @@ class RestaurantModel {
             response.sendStatus(500);
         }
     }
-
-    // public async retrieveRestaurantDetails(response:any, filter:Object): Promise<any> {
-    //     const query = this.model.find(filter);
-    //     query.then((result:any) => {
-    //         response.send(result);
-    //     }).catch((err:any) => {
-    //         console.error({ error: "Unable to Find the Restaurant with id" });
-    //         response.status(404).send({ error: 'Unable to Find the Restaurant with id' }); 
-    // });
-    public async retrieveRestaurantDetails(response:any, filter:Object): Promise<any> {
-        const query = this.model.find(filter);
-        query.then((result:any) => {
-            if (result.length === 0) {
-                console.error({ error: "Unable to find the Restaurant",});
-                response.status(404).send({ error: "Unable to find the Restaurant"});
-            } else {
-                response.send(result);
-            }
-        }).catch((err:any) => {
-            console.error(err);
-            response.status(500).send({ error: err }); 
-        });
-    }
-    
 }
 
 export {RestaurantModel};
