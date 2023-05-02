@@ -54,7 +54,22 @@ class RestaurantModel {
             console.error(err);
             response.sendStatus(500);
         }
-    }    
+    }  
+    
+    public async retrieveRestaurantDetails(response:any, filter:Object): Promise<any> {
+        const query = this.model.findOne(filter);
+        query.then((restaurantdetail:any) => {
+            if (!restaurantdetail) {
+                console.error({ error: "Unable to find the Restaurant"});
+                response.status(404).send({ error: "Restaurant not found"});
+            } else {
+                response.send(restaurantdetail);
+            }
+        }).catch((err:any) => {
+            console.error(err);
+            response.status(500).send({ message: "Internal server error while retrieving restaurant detail" }); 
+        });
+    }
 }
 
 export {RestaurantModel};
