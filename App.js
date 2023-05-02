@@ -26,6 +26,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
 //Imports
 const RestaurantModel_1 = require("./models/RestaurantModel");
+const MenuModel_1 = require("./models/MenuModel");
+const MenuItemsModel_1 = require("./models/MenuItemsModel");
 const express = require("express");
 const bodyParser = __importStar(require("body-parser"));
 const OrderModel_1 = require("./models/OrderModel");
@@ -35,6 +37,8 @@ class App {
     constructor() {
         this.expressApp = express();
         this.Restaurants = new RestaurantModel_1.RestaurantModel();
+        this.Menu = new MenuModel_1.MenuModel();
+        this.MenuItems = new MenuItemsModel_1.MenuItemsModel();
         this.Orders = new OrderModel_1.OrderModel();
         this.middleware();
         this.routes();
@@ -47,10 +51,26 @@ class App {
     //Api Endpoints....
     routes() {
         let router = express.Router();
-        //Retrive all the restaurant endpoint
+        //Retrieve all the restaurant endpoint
         router.get("/restaurants", (req, res) => {
             console.log("Query all the restaurants");
             this.Restaurants.retrieveAllRestaurants(res);
+        });
+        //Retrieve Menu
+        router.get("/restaurant/:restaurantId/menu", (req, res) => {
+            var restaurantId = req.params.restaurantId;
+            console.log("Query single menu with restid: " + restaurantId);
+            this.Menu.retrieveMenu(res, { restaurantId: restaurantId });
+        });
+        //Retrieve Menu Items
+        router.get("/restaurant/:restaurantId/menu/:menuId", (req, res) => {
+            var restaurantId = req.params.restaurantId;
+            var menuId = req.params.menuId;
+            console.log("Query single menu with restid: " + restaurantId);
+            this.MenuItems.retrieveMenuItems(res, {
+                menuId: menuId,
+                restaurantId: restaurantId,
+            });
         });
         // post order
         router.post("/orders", (request, response) => {

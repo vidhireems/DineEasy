@@ -4,5 +4,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const App_1 = require("./App");
 //Initialize the server and listen on port 8080
 let server = new App_1.App().expressApp;
-console.log("App Server listening on port 3000");
-server.listen(3000);
+console.log("App Server listening on port 8080");
+server.listen(8080);
