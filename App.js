@@ -31,9 +31,9 @@ const MenuItemsModel_1 = require("./models/MenuItemsModel");
 const express = require("express");
 const bodyParser = __importStar(require("body-parser"));
 const OrderModel_1 = require("./models/OrderModel");
-//Class App which creates and configure the express application
+// Class App which creates and configure the express application
 class App {
-    //Constructor which runs the configuration on the express application and calls the routes function
+    // Constructor which runs the configuration on the express application and calls the routes function
     constructor() {
         this.expressApp = express();
         this.Restaurants = new RestaurantModel_1.RestaurantModel();
@@ -43,32 +43,32 @@ class App {
         this.middleware();
         this.routes();
     }
-    //configure the middleware of express application
+    // Configure the middleware of express application
     middleware() {
         this.expressApp.use(bodyParser.json());
         this.expressApp.use(bodyParser.urlencoded({ extended: true }));
     }
-    //Api Endpoints....
+    // Api Endpoints....
     routes() {
         let router = express.Router();
-        //Retrieve all the restaurant endpoint
+        // Retrieve all the restaurant endpoint
         router.get("/restaurants", (req, res) => {
             console.log("Query all the restaurants");
             this.Restaurants.retrieveAllRestaurants(res);
         });
-        //Retrieve specific restaurant details
+        // Retrieve specific restaurant details
         router.get('/restaurants/:id', (req, res) => {
             let id = req.params.id;
             console.log('Query single restaurant with id: ' + id);
             this.Restaurants.retrieveRestaurantDetails(res, { id: id });
         });
-        //Retrieve Menu
+        // Retrieve Menu
         router.get("/restaurant/:restaurantId/menu", (req, res) => {
             var restaurantId = req.params.restaurantId;
             console.log("Query single menu with restid: " + restaurantId);
             this.Menu.retrieveMenu(res, { restaurantId: restaurantId });
         });
-        //Retrieve Menu Items
+        // Retrieve Menu Items
         router.get("/restaurant/:restaurantId/menu/:menuId", (req, res) => {
             var restaurantId = req.params.restaurantId;
             var menuId = req.params.menuId;
@@ -78,7 +78,7 @@ class App {
                 restaurantId: restaurantId,
             });
         });
-        // post order
+        // Routing post order requests to save data
         router.post("/orders", (request, response) => {
             this.Orders.createOrder(request, response);
         });

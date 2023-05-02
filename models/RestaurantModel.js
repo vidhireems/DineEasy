@@ -16,17 +16,17 @@ exports.RestaurantModel = void 0;
 //Imports
 const mongoose_1 = __importDefault(require("mongoose"));
 const DbConnection_1 = require("../DbConnection");
-//Mongoose connections and object
+// Mongoose connections and object
 let mongooseConnection = DbConnection_1.DbConnection.mongooseConnection;
 let mongooseObj = DbConnection_1.DbConnection.mongooseInstance;
-//Class for restaurant model
+// Class for restaurant model
 class RestaurantModel {
-    //constructor initilize the create schema and model
+    // Constructor initilize the create schema and model
     constructor() {
         this.createSchema();
         this.createModel();
     }
-    //function to create the schema for restaurants
+    // Function to create the schema for restaurants
     createSchema() {
         this.schema = new mongoose_1.default.Schema({
             id: Number,
@@ -45,11 +45,11 @@ class RestaurantModel {
             numberOfTables: Number,
         }, { collection: 'restaurant' });
     }
-    //function to create model for the reataurant interface and schema
+    // Function to create model for the reataurant interface and schema
     createModel() {
         this.model = mongooseConnection.model("restaurant", this.schema);
     }
-    // function for retriving all the restaurants(have to use promise after mongoose version 6)
+    // Function for retrieving all the restaurants(have to use promise after mongoose version 6)
     retrieveAllRestaurants(response) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -62,6 +62,7 @@ class RestaurantModel {
             }
         });
     }
+    // Function for retrieving restaurant specific information 
     retrieveRestaurantDetails(response, filter) {
         return __awaiter(this, void 0, void 0, function* () {
             const query = this.model.findOne(filter);

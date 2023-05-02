@@ -1,6 +1,8 @@
+// Connect to mongo
 const conn = new Mongo();
+
+// Connect to admin DB
 db = conn.getDB('admin');
-db.disableFreeMonitoring();
 
 // Check if the user already exists
 if (db.getUser("dbAdmin")) {
@@ -9,9 +11,9 @@ if (db.getUser("dbAdmin")) {
 } else {
 	// If user is not present, then create one
 	db.createUser({
-	user: "dbAdmin",
-	pwd: "test",
-	roles: ["readWriteAnyDatabase", "dbAdminAnyDatabase", "clusterAdmin"]
+		user: "dbAdmin",
+		pwd: "test",
+		roles: ["readWriteAnyDatabase", "dbAdminAnyDatabase", "clusterAdmin"]
     });
 	print("Successfully created dbAdmin user!!")
 }

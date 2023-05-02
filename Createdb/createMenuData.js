@@ -1,8 +1,16 @@
+// Connect to mongo
 const conn = new Mongo();
+
+// Connect to dineEasy DB
 db = conn.getDB('dineEasy');
-db.disableFreeMonitoring();
+
+// Create collection if not already present
 menuCollection = db.getCollection('menu') || db.createCollection('menu').then(() => db.getCollection('menu'));
+
+//Delete all the previous menu collection data
 menuCollection.deleteMany({})
+
+// Insert all the restaurant data to the DB
 menuCollection.insertMany(
     [{
         restaurantId: 1,
