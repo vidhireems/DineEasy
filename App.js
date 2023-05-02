@@ -47,6 +47,7 @@ class App {
     middleware() {
         this.expressApp.use(bodyParser.json());
         this.expressApp.use(bodyParser.urlencoded({ extended: true }));
+        this.expressApp.use(express.static('pages'));
     }
     // Api Endpoints....
     routes() {
