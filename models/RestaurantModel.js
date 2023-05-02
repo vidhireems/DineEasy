@@ -64,8 +64,8 @@ class RestaurantModel {
     }
     retrieveRestaurantDetails(response, filter) {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = this.model.findOne(filter);
-            query.then((restaurantdetail) => {
+            try {
+                const restaurantdetail = yield this.model.findOne(filter);
                 if (!restaurantdetail) {
                     console.error({ error: "Unable to find the Restaurant" });
                     response.status(404).send({ error: "Restaurant not found" });
@@ -73,10 +73,11 @@ class RestaurantModel {
                 else {
                     response.send(restaurantdetail);
                 }
-            }).catch((err) => {
+            }
+            catch (err) {
                 console.error(err);
-                response.status(500).send({ message: "Internal server error while retrieving restaurant detail" });
-            });
+                response.status(500).send({ message: "Internal server error while retrieving restaurant details" });
+            }
         });
     }
 }
