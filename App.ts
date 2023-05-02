@@ -46,7 +46,7 @@ class App {
     router.get('/restaurants/:id', (req, res) => {
       let id = req.params.id;
       console.log('Query single restaurant with id: ' + id);
-      this.Restaurants.retrieveRestaurantDetails(res, {id: id});
+      this.Restaurants.getRestaurantDetailsById(res, {id: id});
     }); 
 
     // Retrieve Menu

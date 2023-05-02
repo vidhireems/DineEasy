@@ -55,20 +55,20 @@ class RestaurantModel {
             response.sendStatus(500);
         }
     }  
-    
+
     // Function for retrieving restaurant specific information 
-    public async retrieveRestaurantDetails(response:any, filter:Object): Promise<any> {
+    public async getRestaurantDetailsById(response:any, filter:Object): Promise<any> {
         try {
           const restaurantdetail = await this.model.findOne(filter);
           if (!restaurantdetail) {
             console.error({ error: "Unable to find the Restaurant"});
-            response.status(404).send({ error: "Restaurant not found"});
+            response.status(404).json({ error: "Restaurant not found"});
           } else {
-            response.send(restaurantdetail);
+            response.json(restaurantdetail);
           }
         } catch (err) {
           console.error(err);
-          response.status(500).send({ message: "Internal server error while retrieving restaurant details" }); 
+          response.status(500).json({ message: "Internal server error while retrieving restaurant details" }); 
         }
     }
 }
