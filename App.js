@@ -80,7 +80,6 @@ class App {
         });
         // post order
         router.post("/orders", (request, response) => {
-            console.log("Customer please make an order");
             this.Orders.createOrder(request, response);
         });
         this.expressApp.use("/", router);

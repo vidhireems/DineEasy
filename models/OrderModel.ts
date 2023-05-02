@@ -1,6 +1,7 @@
 import Mongoose from "mongoose";
 import { DbConnection } from "../DbConnection";
 import { IOrderModel } from "../interfaces/IOrderModel";
+import { v4 as uuidv4 } from "uuid";
 
 let mongooseConnection = DbConnection.mongooseConnection;
 let mongooseObj = DbConnection.mongooseInstance;
@@ -21,10 +22,14 @@ class OrderModel {
           type: Mongoose.Schema.Types.ObjectId,
           ref: "restaurant",
         },
-        orderId: Number,
+        orderId: {
+          type: String,
+          required: true,
+          unique: true,
+        },
         name: String,
         quantity: Number,
-        itemName: String,
+        itemName: [String],
         //price
       },
       { collection: "order", timestamps: true }
@@ -37,8 +42,9 @@ class OrderModel {
 
   public async createOrder(request: any, response: any): Promise<any> {
     try {
-      const { restaurantId, orderId, name, quantity, itemName } = request.body;
-      if (!restaurantId || !orderId || !name || !quantity || !itemName) {
+      const orderId = uuidv4();
+      const { restaurantId, name, quantity, itemName } = request.body;
+      if (!restaurantId || !name || !quantity || !itemName) {
         return response.status(400).json({ message: "Please fill all fields" });
       }
       const order = new this.model({
@@ -51,14 +57,20 @@ class OrderModel {
       await order.save();
       response.status(200).json({
         message: "Order placed successfully",
-        order,
+        order: {
+          orderId,
+          restaurantId,
+          name,
+          quantity,
+          itemName,
+        },
       });
+      // console.log(response);
     } catch (error) {
       console.error(error);
       console.log(error);
       response.sendStatus(500);
     }
   }
-
 }
 export { OrderModel };
