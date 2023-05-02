@@ -5,7 +5,7 @@ const conn = new Mongo();
 db = conn.getDB('dineEasy');
 
 // Create collection if not already present
-restaurantCollection = db.getCollection('restaurant') || db.createCollection('restaurant').then(() => db.getCollection('restaurant'));
+restaurantCollection = db.getCollection('restaurant') || db.createCollection('restaurant');
 
 // Delete all the previous restaurant collection data
 restaurantCollection.deleteMany({})

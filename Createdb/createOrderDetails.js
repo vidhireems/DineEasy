@@ -5,4 +5,4 @@ const conn = new Mongo();
 db = conn.getDB('dineEasy');
 
 // Create collection if not already present
-orderCollection = db.getCollection('order') || db.createCollection('order').then(() => db.getCollection('order'));
+orderCollection = db.getCollection('order') || db.createCollection('order');

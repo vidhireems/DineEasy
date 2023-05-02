@@ -5,7 +5,7 @@ const conn = new Mongo();
 db = conn.getDB('dineEasy');
 
 // Create collection if not already present
-menuCollection = db.getCollection('menu') || db.createCollection('menu').then(() => db.getCollection('menu'));
+menuCollection = db.getCollection('menu') || db.createCollection('menu');
 
 //Delete all the previous menu collection data
 menuCollection.deleteMany({})
