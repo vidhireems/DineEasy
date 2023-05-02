@@ -12,55 +12,58 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RestaurantModel = void 0;
-//Imports
+exports.OrderModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const DbConnection_1 = require("../DbConnection");
-//Mongoose connections and object
 let mongooseConnection = DbConnection_1.DbConnection.mongooseConnection;
 let mongooseObj = DbConnection_1.DbConnection.mongooseInstance;
-//Class for restaurant model
-class RestaurantModel {
-    //constructor initilize the create schema and model
+class OrderModel {
     constructor() {
         this.createSchema();
         this.createModel();
     }
-    //function to create the schema for restaurants
     createSchema() {
         this.schema = new mongoose_1.default.Schema({
-            id: Number,
+            restaurantId: {
+                type: mongoose_1.default.Schema.Types.ObjectId,
+                ref: "restaurant",
+            },
+            orderId: Number,
             name: String,
-            image: String,
-            location: String,
-            rating: Number,
-            reviews: Number,
-            cost: String,
-            cuisines: String,
-            contact: String,
-            neighborhood: String,
-            hours: String,
-            parkingdetails: String,
-            isValetPark: Boolean,
-            numberOfTables: Number,
-        }, { collection: 'restaurant' });
+            quantity: Number,
+            itemName: String,
+            //price
+        }, { collection: "order", timestamps: true });
     }
-    //function to create model for the reataurant interface and schema
     createModel() {
-        this.model = mongooseConnection.model("restaurant", this.schema);
+        this.model = mongooseConnection.model("order", this.schema);
     }
-    // function for retriving all the restaurants(have to use promise after mongoose version 6)
-    retrieveAllRestaurants(response) {
+    createOrder(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const itemArray = yield this.model.find().exec();
-                response.json(itemArray);
+                const { restaurantId, orderId, name, quantity, itemName } = request.body;
+                if (!restaurantId || !orderId || !name || !quantity || !itemName) {
+                    return response.status(400).json({ message: "Please fill all fields" });
+                }
+                const order = new this.model({
+                    restaurantId,
+                    orderId,
+                    name,
+                    quantity,
+                    itemName,
+                });
+                yield order.save();
+                response.status(200).json({
+                    message: "Order placed successfully",
+                    order,
+                });
             }
-            catch (err) {
-                console.error(err);
+            catch (error) {
+                console.error(error);
+                console.log(error);
                 response.sendStatus(500);
             }
         });
     }
 }
-exports.RestaurantModel = RestaurantModel;
+exports.OrderModel = OrderModel;

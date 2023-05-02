@@ -1,52 +1,83 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
 //Imports
-var RestaurantModel_1 = require("./models/RestaurantModel");
-var MenuModel_1 = require("./models/MenuModel");
-var MenuItemsModel_1 = require("./models/MenuItemsModel");
-var express = require("express");
-var bodyParser = require("body-parser");
+const RestaurantModel_1 = require("./models/RestaurantModel");
+const MenuModel_1 = require("./models/MenuModel");
+const MenuItemsModel_1 = require("./models/MenuItemsModel");
+const express = require("express");
+const bodyParser = __importStar(require("body-parser"));
+const OrderModel_1 = require("./models/OrderModel");
 //Class App which creates and configure the express application
-var App = /** @class */ (function () {
+class App {
     //Constructor which runs the configuration on the express application and calls the routes function
-    function App() {
+    constructor() {
         this.expressApp = express();
         this.Restaurants = new RestaurantModel_1.RestaurantModel();
         this.Menu = new MenuModel_1.MenuModel();
         this.MenuItems = new MenuItemsModel_1.MenuItemsModel();
-        this.routes();
+        this.Orders = new OrderModel_1.OrderModel();
         this.middleware();
+        this.routes();
     }
     //configure the middleware of express application
-    App.prototype.middleware = function () {
+    middleware() {
         this.expressApp.use(bodyParser.json());
-        this.expressApp.use(bodyParser.urlencoded({ extended: false }));
-    };
+        this.expressApp.use(bodyParser.urlencoded({ extended: true }));
+    }
     //Api Endpoints....
-    App.prototype.routes = function () {
-        var _this = this;
-        var router = express.Router();
+    routes() {
+        let router = express.Router();
         //Retrieve all the restaurant endpoint
-        router.get('/restaurants', function (req, res) {
+        router.get("/restaurants", (req, res) => {
             console.log("Query all the restaurants");
-            _this.Restaurants.retrieveAllRestaurants(res);
+            this.Restaurants.retrieveAllRestaurants(res);
         });
         //Retrieve Menu
-        router.get('/restaurant/:restaurantId/menu', function (req, res) {
+        router.get("/restaurant/:restaurantId/menu", (req, res) => {
             var restaurantId = req.params.restaurantId;
-            console.log('Query single menu with restid: ' + restaurantId);
-            _this.Menu.retrieveMenu(res, { restaurantId: restaurantId });
+            console.log("Query single menu with restid: " + restaurantId);
+            this.Menu.retrieveMenu(res, { restaurantId: restaurantId });
         });
         //Retrieve Menu Items
-        router.get('/restaurant/:restaurantId/menu/:menuId', function (req, res) {
+        router.get("/restaurant/:restaurantId/menu/:menuId", (req, res) => {
             var restaurantId = req.params.restaurantId;
             var menuId = req.params.menuId;
-            console.log('Query single menu with restid: ' + restaurantId);
-            _this.MenuItems.retrieveMenuItems(res, { menuId: menuId, restaurantId: restaurantId });
+            console.log("Query single menu with restid: " + restaurantId);
+            this.MenuItems.retrieveMenuItems(res, {
+                menuId: menuId,
+                restaurantId: restaurantId,
+            });
         });
-        this.expressApp.use('/', router);
-    };
-    return App;
-}());
+        // post order
+        router.post("/orders", (request, response) => {
+            console.log("Customer please make an order");
+            this.Orders.createOrder(request, response);
+        });
+        this.expressApp.use("/", router);
+    }
+}
 exports.App = App;
