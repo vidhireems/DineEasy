@@ -50,14 +50,14 @@ class App {
     }); 
 
     // Retrieve Menu
-    router.get("/restaurant/:restaurantId/menu", (req, res) => {
+    router.get("/restaurants/:restaurantId/menu", (req, res) => {
       var restaurantId = req.params.restaurantId;
       console.log("Query single menu with restid: " + restaurantId);
       this.Menu.retrieveMenu(res, { restaurantId: restaurantId });
     });
 
     // Retrieve Menu Items
-    router.get("/restaurant/:restaurantId/menu/:menuId", (req, res) => {
+    router.get("/restaurants/:restaurantId/menu/:menuId", (req, res) => {
       var restaurantId = req.params.restaurantId;
       var menuId = req.params.menuId;
       console.log("Query single menu with restid: " + restaurantId);
