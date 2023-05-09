@@ -70,6 +70,11 @@ class RestaurantModel {
             response.status(500).send({ message: "Internal server error while retrieving restaurant detail" }); 
         });
     }
+
+    // delete restaurant will delete menues and items 
+    // add new restaurants
+    // Update restaurant 
+    // functions related to filtering restaurants
 }
 
 export {RestaurantModel};

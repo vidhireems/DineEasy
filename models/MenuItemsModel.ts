@@ -59,6 +59,10 @@ class MenuItemsModel {
             response.sendStatus(500);
         }
     }
+
+    // delete menu item
+    // add menu items
+    // update menu item
 }
 export {MenuItemsModel};
 
