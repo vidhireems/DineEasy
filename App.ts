@@ -48,6 +48,12 @@ class App {
       this.Restaurants.retrieveRestaurantDetails(res, {id: id});
     }); 
 
+    //Create restaurant details
+    router.post("/restaurants", (request, response) => {
+      this.Restaurants.createRestaurant(request, response);
+    });
+
+  
     //Retrieve Menu
     router.get("/restaurant/:restaurantId/menu", (req, res) => {
       var restaurantId = req.params.restaurantId;

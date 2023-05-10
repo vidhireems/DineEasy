@@ -2,6 +2,7 @@
 import Mongoose from 'mongoose';
 import { DbConnection } from "../DbConnection";
 import { IRestaurantModel } from '../interfaces/IRestaurantModel';
+import { v4 as uuidv4 } from "uuid";
 
 //Mongoose connections and object
 let mongooseConnection = DbConnection.mongooseConnection;
@@ -22,12 +23,12 @@ class RestaurantModel {
     public createSchema(): void {
         this.schema = new Mongoose.Schema(
             {
-                id: Number,
+                resId: String,
                 name: String,
                 image: String,
                 location: String,
-                rating: Number,
-                reviews: Number,
+                rating:Number,
+                reviews:Number,
                 cost: String,
                 cuisines: String,
                 contact: String,
@@ -72,7 +73,63 @@ class RestaurantModel {
     }
 
     // delete restaurant will delete menues and items 
+
+
+
+
     // add new restaurants
+    public async createRestaurant(request: any, response: any): Promise<any> {
+        try {
+          const resId = uuidv4();
+          const { name,  image,location,rating,reviews,cost,cuisines,contact, neighborhood, hours, parkingdetails,isValetPark,numberOfTables} = request.body;
+          if (!name|| !image || !location|| !rating|| !reviews || !cost || !cuisines || !contact|| !neighborhood || !hours || !parkingdetails|| !isValetPark||!numberOfTables) {
+            return response.status(400).json({ message: "Please fill all fields" });
+          }
+          const restaurant = new this.model({
+            resId,
+            name,
+            image,
+            location,
+            rating,
+            reviews,
+            cost,
+            cuisines,
+            contact,
+            neighborhood,
+            hours,
+            parkingdetails,
+            isValetPark,
+            numberOfTables,
+          });
+          await restaurant.save();
+          response.status(200).json({
+            message: " Congrats",
+            restaurant: {
+                resId,
+                name,
+                image,
+                location,
+                rating,
+                reviews,
+                cost,
+                cuisines,
+                contact,
+                neighborhood,
+                hours,
+                parkingdetails,
+                isValetPark,
+                numberOfTables,
+            },
+          });
+          // console.log(response);
+        } catch (error) {
+          console.error(error);
+          console.log(error);
+          response.sendStatus(500);
+        }
+      }
+
+
     // Update restaurant 
     // functions related to filtering restaurants
 }
