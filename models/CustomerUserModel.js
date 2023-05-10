@@ -17,6 +17,7 @@ exports.CustomerUserModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const DbConnection_1 = require("../DbConnection");
 const uuid_1 = require("uuid");
+const UserModel_1 = require("./UserModel");
 //Mongoose connections and object
 let mongooseConnection = DbConnection_1.DbConnection.mongooseConnection;
 let mongooseObj = DbConnection_1.DbConnection.mongooseInstance;
@@ -78,33 +79,48 @@ class CustomerUserModel {
             try {
                 const customerId = (0, uuid_1.v4)();
                 console.log(request.body);
-                const { address, contactNumber } = request.body;
-                if (!address || !contactNumber) {
+                const { address, contactNumber, name, email, password } = request.body;
+                if (!address || !contactNumber || !name || !email || !password || !customerId) {
                     return response.status(400).json({ message: "Please fill all fields" });
                 }
-                const customer = new this.model({
-                    customerId,
-                    address,
-                    contactNumber,
-                    isCheckedIn: false,
-                    customerType: "Freemium",
-                    referenceCustomerTypeId: "",
-                });
-                yield customer.save();
-                response.status(200).json({
-                    message: "User Created successfully",
-                    customer: {
+                //Creating data for createUser
+                const userData = {
+                    "customerId": customerId,
+                    "userType": "Customer",
+                    "name": request.body.name,
+                    "email": request.body.email,
+                    "password": request.body.password
+                };
+                //sending data to user model to create user
+                const userModel = new UserModel_1.UserModel();
+                const userResponse = yield userModel.createCustomerUser(request, userData);
+                if (userResponse.message == "User Created successfully") {
+                    console.log("User Created:...");
+                    const customer = new this.model({
                         customerId,
                         address,
                         contactNumber,
                         isCheckedIn: false,
                         customerType: "Freemium",
                         referenceCustomerTypeId: "",
-                    },
-                });
+                    });
+                    yield customer.save();
+                    console.log("Customer Created:...");
+                    response.status(200).json({
+                        message: "Customer Created successfully",
+                        customer: {
+                            customerId,
+                            address,
+                            contactNumber,
+                            isCheckedIn: false,
+                            customerType: "Freemium",
+                            referenceCustomerTypeId: "",
+                        },
+                    });
+                }
             }
             catch (error) {
-                response.error(500).json({ message: "Error Creating User..." });
+                response.error(500).json({ message: "Error Creating Customer..." });
             }
         });
     }

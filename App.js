@@ -87,7 +87,6 @@ class App {
         // post customer
         router.post("/addcustomer", (request, response) => {
             console.log("Adding New Customer");
-            console.log(request.body + "From App.ts");
             this.Customer.createCustomer(request, response);
         });
         this.expressApp.use("/", router);

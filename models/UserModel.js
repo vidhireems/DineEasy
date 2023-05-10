@@ -17,6 +17,7 @@ exports.UserModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const DbConnection_1 = require("../DbConnection");
 const bcrypt = require('bcrypt');
+const uuid_1 = require("uuid");
 //Mongoose connections and object
 let mongooseConnection = DbConnection_1.DbConnection.mongooseConnection;
 let mongooseObj = DbConnection_1.DbConnection.mongooseInstance;
@@ -30,12 +31,12 @@ class UserModel {
     //function to create the schema for restaurants
     createSchema() {
         this.schema = new mongoose_1.default.Schema({
-            id: String,
+            userId: String,
             name: String,
             email: String,
-            Password: String,
-            User_Type: String,
-            Refrence_User_Type_Id: String,
+            password: String,
+            userType: String,
+            refrenceUserTypeId: String,
         }, { collection: 'Users' });
     }
     //function to create model for the User interface and schema
@@ -67,9 +68,30 @@ class UserModel {
     //logout user
     // delete user will delete all the items related to that user
     // add new user
-    createCustomerUser(request, response) {
+    createCustomerUser(request, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            // create customer user first and thancome here to make a user
+            try {
+                //create uuid
+                const userId = (0, uuid_1.v4)();
+                // Extract the required data from the 'data' parameter
+                const { referenceCustomerTypeId, userType, name, email, password } = data;
+                // Perform the logic to create a user based on the provided data
+                const newUser = new this.model({
+                    userId,
+                    name,
+                    email,
+                    password,
+                    userType,
+                    referenceCustomerTypeId
+                });
+                yield newUser.save();
+                // Return the created user or any other response as needed
+                return { message: "User Created successfully" };
+            }
+            catch (error) {
+                console.error("Error Creating User:", error);
+                throw new Error("Error Creating User");
+            }
         });
     }
 }

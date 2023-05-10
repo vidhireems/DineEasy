@@ -24,12 +24,12 @@ class UserModel {
     public createSchema(): void {
         this.schema = new Mongoose.Schema(
             {
-                id: String,
+                userId: String,
                 name: String,
                 email: String,
-                Password: String,
-                User_Type: String,
-                Refrence_User_Type_Id: String,
+                password: String,
+                userType: String,
+                refrenceUserTypeId: String,
             }, {collection: 'Users'}
         );
     }
@@ -60,9 +60,31 @@ class UserModel {
     //logout user
     // delete user will delete all the items related to that user
     // add new user
-    public async createCustomerUser(request: any, response: any): Promise<any> {
-        // create customer user first and thancome here to make a user
-      }
+    public async createCustomerUser(request:any, data:any): Promise<any> {
+        try {
+            //create uuid
+            const userId = uuidv4();
+            // Extract the required data from the 'data' parameter
+            const {referenceCustomerTypeId, userType, name, email, password} = data;
+        
+            // Perform the logic to create a user based on the provided data
+            const newUser = new this.model({
+                userId,
+                name,
+                email,
+                password,
+                userType,
+                referenceCustomerTypeId
+            });
+            await newUser.save();
+        
+            // Return the created user or any other response as needed
+            return { message: "User Created successfully" };
+        } catch (error) {
+            console.error("Error Creating User:", error);
+            throw new Error("Error Creating User");
+        }
+    }
     //hashing password before storage
     
 }
