@@ -3,6 +3,7 @@ import Mongoose from 'mongoose';
 import { DbConnection } from "../DbConnection";
 import { IUserModel } from '../interfaces/IUserModel';
 const bcrypt = require('bcrypt');
+import { v4 as uuidv4 } from "uuid";
 
 //Mongoose connections and object
 let mongooseConnection = DbConnection.mongooseConnection;
@@ -59,6 +60,11 @@ class UserModel {
     //logout user
     // delete user will delete all the items related to that user
     // add new user
+    public async createCustomerUser(request: any, response: any): Promise<any> {
+        // create customer user first and thancome here to make a user
+      }
+    //hashing password before storage
+    
 }
 
 export {UserModel};

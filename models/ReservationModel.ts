@@ -2,7 +2,6 @@
 import Mongoose from 'mongoose';
 import { DbConnection } from "../DbConnection";
 import { IReservationModel } from '../interfaces/IReservationModel';
-const bcrypt = require('bcrypt');
 
 //Mongoose connections and object
 let mongooseConnection = DbConnection.mongooseConnection;
@@ -56,10 +55,9 @@ class ReservationModel {
                response.sendStatus(500).send({ message: "Internal server error while retrieving User Reservation" });
         }
     }
-    //login user
-    //logout user
-    // delete user will delete all the items related to that user
-    // add new user
+    // add reservation
+    // delete reservation
+
 }
 
 export {ReservationModel};

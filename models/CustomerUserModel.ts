@@ -2,6 +2,7 @@
 import Mongoose from 'mongoose';
 import { DbConnection } from "../DbConnection";
 import { ICustomerUserModel } from "../interfaces/ICustomerUserModel";
+import { v4 as uuidv4 } from "uuid";
 
 //Mongoose connections and object
 let mongooseConnection = DbConnection.mongooseConnection;
@@ -22,12 +23,21 @@ class CustomerUserModel {
     public createSchema(): void {
         this.schema = new Mongoose.Schema(
             {
-                id: String,
-                address: String,
-                contactNumber: String,
-                isCheckedIn: Boolean,
-                customerType: String,
-                refrenceCustomerTypeId: String,
+                customerId:{ type:String, require: true },
+                address:{ type:String, require: true },
+                contactNumber:{ type:String, require: true },
+                isCheckedIn: {
+                    type:Boolean,
+                    default:false
+                },
+                customerType:{
+                    type:String,
+                    default:"Freemium"
+                },
+                refrenceCustomerTypeId: {
+                    type:String,
+                    default:'N/A'
+                },
             }, {collection: 'CustomerUser'}
         );
     }
@@ -55,6 +65,38 @@ class CustomerUserModel {
         }
     }
     //add customer
+    public async createCustomer(request: any, response: any):Promise<any>{
+        try{
+            const customerId = uuidv4();
+            console.log(request.body);
+            const { address, contactNumber } = request.body;
+            if (!address || !contactNumber) {
+                return response.status(400).json({ message: "Please fill all fields" });
+            }
+            const customer = new this.model({
+                customerId,
+                address,
+                contactNumber,
+                isCheckedIn: false,
+                customerType: "Freemium",
+                referenceCustomerTypeId: "", 
+            });
+            await customer.save();
+            response.status(200).json({
+                message: "User Created successfully",
+                customer: {
+                    customerId,
+                    address,
+                    contactNumber,
+                    isCheckedIn: false,
+                    customerType: "Freemium",
+                    referenceCustomerTypeId: "",
+                },
+            });
+        } catch(error) {
+            response.error(500).json( {message: "Error Creating User..."});
+        }
+    }
 }
 
 export {CustomerUserModel};
