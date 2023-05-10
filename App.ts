@@ -5,6 +5,7 @@ import { MenuItemsModel } from "./models/MenuItemsModel";
 import express = require("express");
 import * as bodyParser from "body-parser";
 import { OrderModel } from "./models/OrderModel";
+import { CustomerUserModel } from "./models/CustomerUserModel";
 
 //Class App which creates and configure the express application
 class App {
@@ -13,6 +14,7 @@ class App {
   public Menu: MenuModel;
   public MenuItems: MenuItemsModel;
   public Orders: OrderModel;
+  public Customer: CustomerUserModel;
 
   //Constructor which runs the configuration on the express application and calls the routes function
   constructor() {
@@ -21,6 +23,7 @@ class App {
     this.Menu = new MenuModel();
     this.MenuItems = new MenuItemsModel();
     this.Orders = new OrderModel();
+    this.Customer = new CustomerUserModel();
     this.middleware();
     this.routes();
   }
@@ -69,6 +72,12 @@ class App {
     // post order
     router.post("/orders", (request, response) => {
       this.Orders.createOrder(request, response);
+    });
+
+    // post customer
+    router.post("/addcustomer", (request, response) => {
+      console.log("Adding New Customer");
+      this.Customer.createCustomer(request, response);
     });
 
     this.expressApp.use("/", router);
