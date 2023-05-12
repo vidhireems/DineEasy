@@ -68,7 +68,7 @@ class UserModel {
     //logout user
     // delete user will delete all the items related to that user
     // add new user
-    createCustomerUser(request, data) {
+    createCustomerUser(data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 //create uuid
@@ -85,12 +85,29 @@ class UserModel {
                     referenceCustomerTypeId
                 });
                 yield newUser.save();
-                // Return the created user or any other response as needed
                 return { message: "User Created successfully" };
             }
             catch (error) {
                 console.error("Error Creating User:", error);
                 throw new Error("Error Creating User");
+            }
+        });
+    }
+    //update user (password, email)
+    updateCustomerUser(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            //find the user using the refrence user type id and update the information
+            try {
+                // Extract the required data from the 'data' parameter
+                const { referenceCustomerTypeId, name, email, password } = data;
+                //perform logic to find and update
+                //start working here
+                const updateUser = yield this.model.findOneAndUpdate({ referenceCustomerTypeId }, { email, password, name }, { new: true });
+                return { message: "User Updated Successfully" };
+            }
+            catch (error) {
+                console.error("Error Updating User:", error);
+                throw new Error("Error Updating User");
             }
         });
     }

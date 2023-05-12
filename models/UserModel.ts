@@ -60,7 +60,7 @@ class UserModel {
     //logout user
     // delete user will delete all the items related to that user
     // add new user
-    public async createCustomerUser(request:any, data:any): Promise<any> {
+    public async createCustomerUser(data:any): Promise<any> {
         try {
             //create uuid
             const userId = uuidv4();
@@ -77,12 +77,30 @@ class UserModel {
                 referenceCustomerTypeId
             });
             await newUser.save();
-        
-            // Return the created user or any other response as needed
             return { message: "User Created successfully" };
         } catch (error) {
             console.error("Error Creating User:", error);
             throw new Error("Error Creating User");
+        }
+    }
+    //update user (password, email)
+    public async updateCustomerUser(data:any): Promise<any>{
+
+        //find the user using the refrence user type id and update the information
+        try {
+            // Extract the required data from the 'data' parameter
+            const {referenceCustomerTypeId, name, email, password} = data;
+            //perform logic to find and update
+            //start working here
+            const updateUser = await this.model.findOneAndUpdate(
+                {referenceCustomerTypeId},
+                {email, password,name},
+                {new: true}
+            );
+            return { message: "User Updated Successfully" };
+        } catch (error) {
+            console.error("Error Updating User:", error);
+            throw new Error("Error Updating User");
         }
     }
     //hashing password before storage
