@@ -17,17 +17,17 @@ exports.RestaurantModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const DbConnection_1 = require("../DbConnection");
 const uuid_1 = require("uuid");
-//Mongoose connections and object
+// Mongoose connections and object
 let mongooseConnection = DbConnection_1.DbConnection.mongooseConnection;
 let mongooseObj = DbConnection_1.DbConnection.mongooseInstance;
-//Class for restaurant model
+// Class for restaurant model
 class RestaurantModel {
-    //constructor initilize the create schema and model
+    // Constructor initilize the create schema and model
     constructor() {
         this.createSchema();
         this.createModel();
     }
-    //function to create the schema for restaurants
+    // Function to create the schema for restaurants
     createSchema() {
         this.schema = new mongoose_1.default.Schema({
             resId: String,
@@ -46,11 +46,11 @@ class RestaurantModel {
             numberOfTables: Number,
         }, { collection: 'restaurant' });
     }
-    //function to create model for the reataurant interface and schema
+    // Function to create model for the reataurant interface and schema
     createModel() {
         this.model = mongooseConnection.model("restaurant", this.schema);
     }
-    // function for retriving all the restaurants(have to use promise after mongoose version 6)
+    // Function for retrieving all the restaurants(have to use promise after mongoose version 6)
     retrieveAllRestaurants(response) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -63,22 +63,23 @@ class RestaurantModel {
             }
         });
     }
-    // Function for retriving specific restaurant
-    retrieveRestaurantDetails(response, filter) {
+    // Function for retrieving restaurant specific information 
+    getRestaurantDetailsById(response, filter) {
         return __awaiter(this, void 0, void 0, function* () {
-            const query = this.model.findOne(filter);
-            query.then((restaurantdetail) => {
+            try {
+                const restaurantdetail = yield this.model.findOne(filter);
                 if (!restaurantdetail) {
                     console.error({ error: "Unable to find the Restaurant" });
-                    response.status(404).send({ error: "Restaurant not found" });
+                    response.status(404).json({ error: "Restaurant not found" });
                 }
                 else {
-                    response.send(restaurantdetail);
+                    response.json(restaurantdetail);
                 }
-            }).catch((err) => {
+            }
+            catch (err) {
                 console.error(err);
-                response.status(500).send({ message: "Internal server error while retrieving restaurant detail" });
-            });
+                response.status(500).json({ message: "Internal server error while retrieving restaurant details" });
+            }
         });
     }
     // Delete specific restaurant

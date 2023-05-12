@@ -32,9 +32,9 @@ const express = require("express");
 const bodyParser = __importStar(require("body-parser"));
 const OrderModel_1 = require("./models/OrderModel");
 const CustomerUserModel_1 = require("./models/CustomerUserModel");
-//Class App which creates and configure the express application
+// Class App which creates and configure the express application
 class App {
-    //Constructor which runs the configuration on the express application and calls the routes function
+    // Constructor which runs the configuration on the express application and calls the routes function
     constructor() {
         this.expressApp = express();
         this.Restaurants = new RestaurantModel_1.RestaurantModel();
@@ -45,15 +45,16 @@ class App {
         this.middleware();
         this.routes();
     }
-    //configure the middleware of express application
+    // Configure the middleware of express application
     middleware() {
         this.expressApp.use(bodyParser.json());
         this.expressApp.use(bodyParser.urlencoded({ extended: true }));
+        this.expressApp.use(express.static('pages'));
     }
-    //Api Endpoints....
+    // Api Endpoints....
     routes() {
         let router = express.Router();
-        //Retrieve all the restaurant endpoint
+        // Retrieve all the restaurant endpoint
         router.get("/restaurants", (req, res) => {
             console.log("Query all the restaurants");
             this.Restaurants.retrieveAllRestaurants(res);
@@ -62,7 +63,7 @@ class App {
         router.get('/restaurants/:resId', (req, res) => {
             var id = req.params.resId;
             console.log('Query single restaurant with id: ' + id);
-            this.Restaurants.retrieveRestaurantDetails(res, { resId: id });
+            this.Restaurants.getRestaurantDetailsById(res, { resId: id });
         });
         //Create restaurant 
         router.post("/restaurants", (request, response) => {
@@ -70,21 +71,11 @@ class App {
         });
         //Delete Restaurant
         router.delete("/restaurants/:resId", (req, res) => {
-            var resId = req.params.resId;
             this.Restaurants.deleteRestaurant(req, res);
         });
-        //Update restaurant
-        //   router.put("/restaurants/:resId",(req,res) => {
-        //     var resId = req.params.resId;
-        //     this.Restaurants.updateRestaurant(req,res);
-        //  });
+        //Update restaurant 
         router.put("/restaurants/:resId", (req, res) => {
-            // var resId = req.params.resId;
             this.Restaurants.updateRestaurant(req, res);
-            // .then((updatedRestaurant) =>
-            //     res.status(200).json({ message: "Restaurant updated successfully", restaurant: updatedRestaurant })
-            //   )
-            //   .catch((error) => res.status(500).json({ message: "An error occurred while updating the restaurant", error }));
         });
         //Retrieve Menu
         router.get("/restaurants/:restaurantId/menu", (req, res) => {
@@ -92,7 +83,7 @@ class App {
             console.log("Query single menu with restid: " + restaurantId);
             this.Menu.retrieveMenu(res, { restaurantId: restaurantId });
         });
-        //Retrieve Menu Items
+        // Retrieve Menu Items
         router.get("/restaurants/:restaurantId/menu/:menuId", (req, res) => {
             var restaurantId = req.params.restaurantId;
             var menuId = req.params.menuId;
@@ -102,7 +93,7 @@ class App {
                 restaurantId: restaurantId,
             });
         });
-        // post order
+        // Routing post order requests to save data
         router.post("/orders", (request, response) => {
             this.Orders.createOrder(request, response);
         });

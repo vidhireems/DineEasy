@@ -7,7 +7,7 @@ import * as bodyParser from "body-parser";
 import { OrderModel } from "./models/OrderModel";
 import { CustomerUserModel } from "./models/CustomerUserModel";
 
-//Class App which creates and configure the express application
+// Class App which creates and configure the express application
 class App {
   public expressApp: express.Application;
   public Restaurants: RestaurantModel;
@@ -16,7 +16,7 @@ class App {
   public Orders: OrderModel;
   public Customer: CustomerUserModel;
 
-  //Constructor which runs the configuration on the express application and calls the routes function
+  // Constructor which runs the configuration on the express application and calls the routes function
   constructor() {
     this.expressApp = express();
     this.Restaurants = new RestaurantModel();
@@ -28,17 +28,18 @@ class App {
     this.routes();
   }
 
-  //configure the middleware of express application
+  // Configure the middleware of express application
   private middleware(): void {
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: true }));
+    this.expressApp.use(express.static('pages'));
   }
 
-  //Api Endpoints....
+  // Api Endpoints....
   private routes(): void {
     let router = express.Router();
 
-    //Retrieve all the restaurant endpoint
+    // Retrieve all the restaurant endpoint
     router.get("/restaurants", (req, res) => {
       console.log("Query all the restaurants");
       this.Restaurants.retrieveAllRestaurants(res);
@@ -48,7 +49,7 @@ class App {
     router.get('/restaurants/:resId', (req, res) => {
       var id = req.params.resId;
       console.log('Query single restaurant with id: ' + id);
-      this.Restaurants.retrieveRestaurantDetails(res, {resId: id});
+      this.Restaurants.getRestaurantDetailsById(res, {resId: id});
     }); 
 
     //Create restaurant 
@@ -74,7 +75,7 @@ class App {
       this.Menu.retrieveMenu(res, { restaurantId: restaurantId });
     });
 
-    //Retrieve Menu Items
+    // Retrieve Menu Items
     router.get("/restaurants/:restaurantId/menu/:menuId", (req, res) => {
       var restaurantId = req.params.restaurantId;
       var menuId = req.params.menuId;
@@ -85,7 +86,7 @@ class App {
       });
     });
 
-    // post order
+    // Routing post order requests to save data
     router.post("/orders", (request, response) => {
       this.Orders.createOrder(request, response);
     });

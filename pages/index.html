@@ -1,0 +1,275 @@
+<html>
+
+<head>
+  <title>DineEasy</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <!-- nav bar with login and sign up -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">DineEasy</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="position-absolute top-0 end-0 mt-3 me-3">
+          <a href="#" class="btn btn-link">Sign up</a>
+          <a href="#" class="btn btn-link">Log in</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  
+
+  <!-- image + Dine Easy title and input -->
+  <div class="row">
+    <div class="col-md">
+      <div class="position-relative">
+        <img src="image.jpg" class="img-fluid" alt="Background image" style="height: 100vh; width: 100vw;">
+        <div class="position-absolute top-50 start-50 translate-middle">
+          <h1 class="text-center font-weight-bold mb-5 display-1 text-grey" style="font-weight: 400; letter-spacing: 10px; text-shadow: 0px 0px 5px whitesmoke;">DineEasy</h1>
+          <div class="form">
+            <input type="text" class="form-control-lg form-input" placeholder="Search any Restaurant...">
+            <button type="button" class="btn btn-primary btn-lg">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- restaurant cards -->
+  <div class="row align-items-center justify-content-around">
+    <div class="row tm-3 p-5">
+      <div class="col-sm">
+        <div class="card shadow-sm h-100" style="width: 100%;">
+          <img class="card-img-top h-50" src="https://media.thecapitalgrille.com/images/site/ext/locations/TCG-8030-Seattle-WA-Ext-574x250.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">The Capital Grille</h5>
+            <div class="col">
+              <p class="card-text">Cost: 50$ and over</p>
+            </div>
+            <div class="col">
+              <p class="card-text text-right">Cuisines: Steakhouse, American, Wine Bar</p>
+            </div>
+          </div>
+          <div class="card-body align-items-end">
+            <button type="button" class="btn btn-primary">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm">
+        <div class="card shadow-sm" style="width: auto;">
+          <img class="card-img-top h-50" src="https://lh3.googleusercontent.com/p/AF1QipMKBt0Kk-GW8ww50Byhgehc_EnWSIUEd8ct5bA-=s680-w680-h510" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Wild Ginger</h5>
+            <div class="col">
+              <p class="card-text">Cost: 31$ - 50$</p>
+            </div>
+            <div class="col">
+              <p class="card-text text-right">Cuisines: Asian, Thai, Chinese</p>
+            </div>
+          </div>
+          <div class="card-body align-items-end">
+            <button type="button" class="btn btn-primary">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm">
+        <div class="card shadow-sm h-100" style="width: 100%;">
+          <img class="card-img-top h-50" src="https://2.bp.blogspot.com/_ofGtzFJekSk/TIa2F96StHI/AAAAAAAAA6o/Pi197kiNCp4/s1600/lola_01.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Lola</h5>
+            <div class="col">
+              <p class="card-text">Cost: 30$ and under</p>
+            </div>
+            <div class="col">
+              <p class="card-text text-right">Cuisines: Mediterranean, Greek</p>
+            </div>
+          </div>
+          <div class="card-body align-items-end">
+            <button type="button" class="btn btn-primary">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm">
+        <div class="card shadow-sm h-100" style="width: 100%;">
+          <img class="card-img-top h-50" src="https://resizer.otstatic.com/v2/photos/wide-huge/1/23891730.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">STELLA</h5>
+            <div class="col">
+              <p class="card-text">Cost: 30$ and under</p>
+            </div>
+            <div class="col">
+              <p class="card-text text-right">Cuisines: Contemporary Italian, Northwest, Italian</p>
+            </div>
+          </div>
+          <div class="card-body align-items-end">
+            <button type="button" class="btn btn-primary">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row align-items-center justify-content-around">
+    <div class="row tm-3 p-5">
+      <div class="col-sm">
+        <div class="card shadow-sm h-100" style="width: auto;">
+          <img class="card-img-top h-50" src="https://www.solusdecor.com/wp-content/uploads/2019/04/2019_Hemi_48_Ring_Cinder_Saltys_AlkiBeach_4-scaled.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Salty's on Alki Beach</h5>
+            <div class="col">
+              <p class="card-text">Cost: 31$ - 50$</p>
+            </div>
+            <div class="col">
+              <p class="card-text text-right">Cuisines: Seafood, Northwest, Steak</p>
+            </div>
+          </div>
+          <div class="card-body align-items-end">
+            <button type="button" class="btn btn-primary">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm">
+        <div class="card shadow-sm h-100" style="width: 100%;">
+          <img class="card-img-top h-50" src="https://m.fourseasons.com/alt/img-opt/~70.490.0,0000-66,5000-1280,0000-720,0000/publish/content/dam/fourseasons/images/web/SEW/SEW_550_original.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Goldfinch Tavern</h5>
+            <div class="col">
+              <p class="card-text">Cost: 31$ - 50$</p>
+            </div>
+            <div class="col">
+              <p class="card-text text-right">Cuisines: Northwest, Seafood, Contemporary American</p>
+            </div>
+          </div>
+          <div class="card-body align-items-end">
+            <button type="button" class="btn btn-primary">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm">
+        <div class="card shadow-sm h-100" style="width: 100%;">
+          <img class="card-img-top h-50" src="https://lh3.googleusercontent.com/p/AF1QipOXtGQDRtrOHL4oAPRspiLDAucPflwaSC4jExUz=s680-w680-h510" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">2120</h5>
+            <div class="col">
+              <p class="card-text">Cost: 31$ - 50$</p>
+            </div>
+            <div class="col">
+              <p class="card-text text-right">Cuisines: Contemporary American, Farm-to-table</p>
+            </div>
+          </div>
+          <div class="card-body align-items-end">
+            <button type="button" class="btn btn-primary">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm">
+        <div class="card shadow-sm h-100" style="width: 100%;">
+          <img class="card-img-top h-50" src="https://lh3.googleusercontent.com/p/AF1QipN1YHdfLoCppWPHGPEL-tlpSRoNHr0qQqO4Syw=s680-w680-h510" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Royal India Fine Dining</h5>
+            <div class="col">
+              <p class="card-text">Cost: 50$ - 60$</p>
+            </div>
+            <div class="col">
+              <p class="card-text text-right">Cuisines: Indian</p>
+            </div>
+          </div>
+          <div class="card-body align-items-end">
+            <button type="button" class="btn btn-primary">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row align-items-center justify-content-around">
+    <div class="row tm-3 p-5">
+      <div class="col-sm">
+        <div class="card shadow-sm h-100" style="width: 100%;">
+          <img class="card-img-top h-50" src="https://lh3.googleusercontent.com/p/AF1QipP3b4FmBRzj_k5dZnh59t-ODQ-VFQauIoG35pUV=s680-w680-h510" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">NIRMAL'S</h5>
+            <div class="col">
+              <p class="card-text">Cost: 30$ - 50$</p>
+            </div>
+            <div class="col">
+              <p class="card-text text-right">Cuisines: Indian</p>
+            </div>
+          </div>
+          <div class="card-body align-items-end">
+            <button type="button" class="btn btn-primary">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm">
+       <div class="card shadow-sm h-100" style="width: 100%;">
+          <img class="card-img-top h-50" src="https://lh3.googleusercontent.com/p/AF1QipNlFIqeETMo30MP_eN1ejCX64bsyejo0qEC9Vit=s680-w680-h510" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Cafe Bollywood</h5>
+            <div class="col">
+              <p class="card-text">Cost: 20$ - 30$</p>
+            </div>
+            <div class="col">
+              <p class="card-text text-right">Cuisines: Indian</p>
+            </div>
+          </div>
+          <div class="card-body align-items-end">
+            <button type="button" class="btn btn-primary">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm">
+       <div class="card shadow-sm h-100" style="width: 100%;">
+          <img class="card-img-top h-50" src="https://lh3.googleusercontent.com/p/AF1QipPnQ9O8fcarWkPTnLykhqirlrBXOH2Nru2adk7o=s680-w680-h510" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Rajdhani Thali Restaurant</h5>
+            <div class="col">
+              <p class="card-text">Cost: 20$ - 30$</p>
+            </div>
+            <div class="col">
+              <p class="card-text text-right">Cuisines: Indian</p>
+            </div>
+          </div>
+          <div class="card-body align-items-end">
+            <button type="button" class="btn btn-primary">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm">
+       <div class="card shadow-sm h-100" style="width: 100%;">
+          <img class="card-img-top h-50" src="https://lh3.googleusercontent.com/p/AF1QipOQnDLHUmFXuYeh-8dHR1flAGoeZ3xUDO40VL0a=s1360-w1360-h1020" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Mirch Masala</h5>
+            <div class="col">
+              <p class="card-text">Cost: 50$ - 60$</p>
+            </div>
+            <div class="col">
+              <p class="card-text text-right">Cuisines: Indian</p>
+            </div>
+          </div>
+          <div class="card-body align-items-end">
+            <button type="button" class="btn btn-primary">View Restaurant</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
