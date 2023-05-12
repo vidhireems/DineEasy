@@ -45,13 +45,15 @@ class App {
       this.Restaurants.retrieveAllRestaurants(res);
     });
 
-    //Retrieve specific restaurant details
+    // Retrieve specific restaurant details
     router.get('/restaurants/:resId', (req, res) => {
-      var id = req.params.resId;
-      console.log('Query single restaurant with id: ' + id);
-      this.Restaurants.getRestaurantDetailsById(res, {resId: id});
-    }); 
+      let resId = req.params.resId;
+      console.log('Query single restaurant with id: ' + resId);
+      this.Restaurants.getRestaurantDetailsById(res, {resId: resId});
+  });
+  
 
+    // Routing post order requests to save data
     //Create restaurant 
     router.post("/restaurants", (request, response) => {
       this.Restaurants.createRestaurant(request, response);
@@ -59,7 +61,11 @@ class App {
 
     //Delete Restaurant
     router.delete("/restaurants/:resId",(req,res) => {
-      this.Restaurants.deleteRestaurant(req,res);
+      this.MenuItems.deleteAllMenuItemsForRestaurant(req, res, () => {
+        this.Menu.deleteAllMenuForRestaurant(req, res, () => {
+          this.Restaurants.deleteRestaurant(req,res)
+        });
+      });
    });
 
     //Update restaurant 
@@ -69,24 +75,55 @@ class App {
   
   
     //Retrieve Menu
-    router.get("/restaurants/:restaurantId/menu", (req, res) => {
-      var restaurantId = req.params.restaurantId;
-      console.log("Query single menu with restid: " + restaurantId);
-      this.Menu.retrieveMenu(res, { restaurantId: restaurantId });
+    router.get("/restaurants/:resId/menu", (req, res) => {
+      var resId = req.params.resId;
+      console.log("Query single menu with restid: " + resId);
+      this.Menu.retrieveMenu(res, { resId: resId });
     });
 
-    // Retrieve Menu Items
-    router.get("/restaurants/:restaurantId/menu/:menuId", (req, res) => {
-      var restaurantId = req.params.restaurantId;
-      var menuId = req.params.menuId;
-      console.log("Query single menu with restid: " + restaurantId);
-      this.MenuItems.retrieveMenuItems(res, {
-        menuId: menuId,
-        restaurantId: restaurantId,
+    //Create menu
+
+    router.post("/restaurants/:resId/menu", (req, res) => {
+      this.Menu.createMenu(req, res);
+    });
+
+    //Delete menu
+    router.delete("/restaurants/:resId/menu/:menuId", (req, res) => {
+      this.MenuItems.deleteAllMenuItems(req, res, () => {
+        this.Menu.deleteMenu(req, res);
       });
     });
 
-    // Routing post order requests to save data
+
+
+    //Retrieve Menu Items
+    router.get("/restaurants/:resId/menu/:menuId/items", (req, res) => {
+      var resId = req.params.resId;
+      var menuId = req.params.menuId;
+      console.log("Query single menu with restid: " + resId);
+      this.MenuItems.retrieveMenuItems(res, {
+        menuId: menuId,
+        resId: resId,
+      });
+    });
+
+    // Create menu Items
+    router.post("/restaurants/:resId/menu/:menuId/items", (req, res) => {
+      this.MenuItems.createMenuItems(req, res);
+    });
+
+   // Delete menu Items
+
+    router.delete("/restaurants/:resId/menu/:menuId/items", (req, res) => {
+      this.MenuItems.deleteMenuItems(req, res);
+     });
+
+    // update menu Items
+    router.patch("/restaurants/:resId/menu/:menuId/items", (req, res) => {
+      this.MenuItems.updateMenuItems(req, res);
+     });
+
+    // post order
     router.post("/orders", (request, response) => {
       this.Orders.createOrder(request, response);
     });

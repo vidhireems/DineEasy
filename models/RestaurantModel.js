@@ -86,14 +86,13 @@ class RestaurantModel {
     deleteRestaurant(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const restaurantId = request.params.resId;
-                console.log(restaurantId);
-                const result = yield this.model.deleteOne({ resId: restaurantId });
+                const resId = request.params.resId;
+                const result = yield this.model.deleteOne({ resId: resId });
                 if (result.deletedCount === 1) {
-                    response.status(200).json({ message: `Restaurant with ID ${restaurantId} deleted successfully` });
+                    response.status(200).json({ message: `Restaurant deleted successfully` });
                 }
                 else {
-                    response.status(404).json({ message: `Restaurant with ID ${restaurantId} not found` });
+                    response.status(404).json({ message: `Restaurant not found` });
                 }
             }
             catch (error) {
@@ -129,7 +128,7 @@ class RestaurantModel {
                 });
                 yield restaurant.save();
                 response.status(200).json({
-                    message: " Congrats",
+                    message: "Restaurant created succcessfully!",
                     restaurant: {
                         resId,
                         name,
@@ -147,7 +146,6 @@ class RestaurantModel {
                         numberOfTables,
                     },
                 });
-                // console.log(response);
             }
             catch (error) {
                 console.error(error);

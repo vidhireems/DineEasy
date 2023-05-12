@@ -3,7 +3,7 @@ import Mongoose from 'mongoose';
 
 //Interface for restaurant model
 interface IRestaurantModel extends Mongoose.Document {
-    resId: string;
+    resId: String;
     name: String;
     image: String;
     location: String;

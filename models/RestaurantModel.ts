@@ -2,6 +2,7 @@
 import Mongoose from 'mongoose';
 import { DbConnection } from "../DbConnection";
 import { IRestaurantModel } from '../interfaces/IRestaurantModel';
+import { MenuModel } from "./MenuModel";
 import { v4 as uuidv4 } from "uuid";
 
 // Mongoose connections and object
@@ -17,6 +18,7 @@ class RestaurantModel {
     public constructor() {
         this.createSchema();
         this.createModel();
+        
     }
 
     // Function to create the schema for restaurants
@@ -57,6 +59,7 @@ class RestaurantModel {
         }
     }  
 
+
     // Function for retrieving restaurant specific information 
     public async getRestaurantDetailsById(response:any, filter:Object): Promise<any> {
         try {
@@ -72,16 +75,16 @@ class RestaurantModel {
           response.status(500).json({ message: "Internal server error while retrieving restaurant details" }); 
         }
     }
+
     // Delete specific restaurant
     public async deleteRestaurant(request: any, response: any): Promise<any> {
         try {
-            const restaurantId = request.params.resId;
-            console.log(restaurantId)
-            const result = await this.model.deleteOne({ resId: restaurantId });
+            const resId = request.params.resId;
+            const result = await this.model.deleteOne({ resId: resId });
             if (result.deletedCount === 1) {
-                response.status(200).json({ message: `Restaurant with ID ${restaurantId} deleted successfully` });
+                response.status(200).json({ message: `Restaurant deleted successfully` });
             } else {
-                response.status(404).json({ message: `Restaurant with ID ${restaurantId} not found` });
+                response.status(404).json({ message: `Restaurant not found` });
             }
         } catch (error) {
             console.error(error);
@@ -115,7 +118,7 @@ class RestaurantModel {
           });
           await restaurant.save();
           response.status(200).json({
-            message: " Congrats",
+            message: "Restaurant created succcessfully!",
             restaurant: {
                 resId,
                 name,
@@ -133,7 +136,6 @@ class RestaurantModel {
                 numberOfTables,
             },
           });
-          // console.log(response);
         } catch (error) {
           console.error(error);
           console.log(error);
@@ -188,9 +190,6 @@ class RestaurantModel {
           res.sendStatus(500);
         }
       }
-      
-    // functions related to filtering restaurants
-
 }
 
 export {RestaurantModel};

@@ -24,8 +24,8 @@ class MenuItemsModel {
     public createSchema(): void {
         this.schema = new Mongoose.Schema(
             {
-                menuId: Number,
-                restaurantId: Number,
+                menuId: String,
+                resId: String,
                 menu :[
                     {
                         category: String,
@@ -60,10 +60,153 @@ class MenuItemsModel {
         }
     }
 
-    // delete menu item
-    // add menu items
-    // update menu item
+    // Add menu items
+    public async createMenuItems(request: any, response: any): Promise<any> {
+        try {
+          const {resId, menuId } = request.params;
+          const { menu } = request.body;
+          if (!resId || !menuId || !menu) {
+            return response.status(400).json({ message: "Please fill all fields" });
+          }
+          //TODO: If menu id not present in menu db then handle the exception
+          let menuItems = await this.model.findOne({ resId, menuId });
+      
+          if (menuItems) {
+            menuItems.menu.push(...menu);
+          }
+          else {
+                
+            menuItems = new this.model({
+                    menuId,
+                    resId,
+                    menu
+                });  
+          }
+
+          await menuItems.save();
+          
+          response.status(200).json({
+            message: "Menu items successfully added",
+            menuItems: {
+                menuId,
+                resId,
+                menu
+            },
+          });
+
+        } catch (error) {
+          console.error(error);
+          response.status(500).json({ message: "Internal server error while creating menu items" });
+        }
+      }
+
+    // Delete Menu item
+    public async deleteMenuItems(request: any, response: any): Promise<any> {
+        try {
+            const { resId, menuId } = request.params;
+            const { names } = request.body;
+
+            if (!resId || !menuId || !names || !Array.isArray(names)) {
+                return response.status(400).json({ message: "Invalid request body" });
+            }
+            const result = await this.model.updateOne(
+                { resId, menuId }, 
+                { 
+                    $pull: { 
+                        menu: { 
+                            name: { $in: names } 
+                        } 
+                    } 
+                });
+            
+            if (result.modifiedCount > 0) {
+                //If all menu items are deleted then also delete the menuitem document and menu document
+                const document = await this.model.findOne({ resId, menuId });
+                if(document.menu.length === 0)
+                {
+                    await this.model.deleteOne({ resId, menuId });
+                }
+                response.status(200).json({ message: "Menu items deleted successfully" });
+            } else {
+                response.status(404).json({ message: "Menu not found" });
+            }
+        } catch (error) {
+            console.error(error);
+            response.status(500).json({ message: "Internal server error while deleting menu items" });
+        }
+    }
+    
+    // Delete all menu items in a menu
+    public async deleteAllMenuItems(request: any, response: any, next: any): Promise<any> {
+        try {
+            const { resId, menuId } = request.params;
+            if (!resId || !menuId ) {
+                return response.status(400).json({ message: "Invalid request body" });
+            }
+            await this.model.deleteMany({resId, menuId});
+            next();
+        } catch (error) {
+            console.error(error);
+            response.status(500).json({ message: "Internal server error while deleting menu items" });
+        }
+    }
+
+    // Delete all menu items for a restaurant
+    public async deleteAllMenuItemsForRestaurant(request: any, response: any, next: any): Promise<any> {
+        try {
+            const { resId } = request.params;
+            if (!resId ) {
+                return response.status(400).json({ message: "Invalid request body" });
+            }
+            await this.model.deleteMany({resId});
+            next();
+        } catch (error) {
+            console.error(error);
+            response.status(500).json({ message: "Internal server error while deleting menu items for restaurant" });
+        }
+    }
+
+    // Update menu item
+    public async updateMenuItems(request: any, response: any): Promise<any> {
+        try {
+          const {resId, menuId } = request.params;
+          const { category, name, price, is_veg, ingredients } = request.body;
+          if (!resId || !menuId) {
+            return response.status(400).json({ message: "Please fill all fields" });
+          }
+      
+          const result = await this.model.findOneAndUpdate(
+            { resId, menuId },
+            {
+              $set: {
+                "menu.$[item].category": category,
+                "menu.$[item].name": name,
+                "menu.$[item].price": price,
+                "menu.$[item].is_veg": is_veg,
+                "menu.$[item].ingredients": ingredients,
+              },
+            },
+            { 
+              new: true, 
+              arrayFilters: [{ "item.name": name }] 
+            }
+          );
+      
+          if (!result) {
+            return response.status(404).json({ message: "Menu item not found!" });
+          }
+      
+          response.status(200).json({
+            message: "Menu item updated successfully",
+            restaurant: result,
+          });
+        } catch (error) {
+          console.error(error);
+          response.status(500);
+        }
+    }
 }
+
 export {MenuItemsModel};
 
 
