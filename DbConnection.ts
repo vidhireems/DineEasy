@@ -26,4 +26,10 @@ class DbConnection {
     
 }
 DbConnection.connect();
+
+// clear models cache
+Object.keys(DbConnection.mongooseConnection.models).forEach(modelName => {
+    delete (DbConnection.mongooseConnection.models as { [key: string]: any })[modelName];
+  });
+  
 export {DbConnection};

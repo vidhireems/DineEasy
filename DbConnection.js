@@ -26,3 +26,7 @@ class DbConnection {
 exports.DbConnection = DbConnection;
 DbConnection.DB_CONNECTION_STRING = 'mongodb://dbAdmin:test@127.0.0.1:27017/dineEasy?authSource=admin';
 DbConnection.connect();
+// clear models cache
+Object.keys(DbConnection.mongooseConnection.models).forEach(modelName => {
+    delete DbConnection.mongooseConnection.models[modelName];
+});
