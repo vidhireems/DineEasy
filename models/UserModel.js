@@ -63,5 +63,14 @@ class UserModel {
             }
         });
     }
+    //login user
+    //logout user
+    // delete user will delete all the items related to that user
+    // add new user
+    createCustomerUser(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // create customer user first and thancome here to make a user
+        });
+    }
 }
 exports.UserModel = UserModel;
