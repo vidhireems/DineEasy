@@ -3,8 +3,6 @@ import Mongoose from 'mongoose';
 import { DbConnection } from "../DbConnection";
 import { IMenuModel } from '../interfaces/IMenuModel';
 import { v4 as uuidv4 } from "uuid";
-import { MenuItemsModel } from './MenuItemsModel';
-
 
 //Mongoose connections and object
 let mongooseConnection = DbConnection.mongooseConnection;

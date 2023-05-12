@@ -2,7 +2,7 @@
 import Mongoose from 'mongoose';
 import { DbConnection } from "../DbConnection";
 import { IMenuItemsModel } from '../interfaces/IMenuItemsModel';
-import { v4 as uuidv4 } from "uuid";
+
 
 //Mongoose connections and object
 let mongooseConnection = DbConnection.mongooseConnection;
@@ -120,7 +120,7 @@ class MenuItemsModel {
                 });
             
             if (result.modifiedCount > 0) {
-                //TODO: If all menu items are deleted then also delete the menuitem document and menu document
+                //If all menu items are deleted then also delete the menuitem document and menu document
                 const document = await this.model.findOne({ resId, menuId });
                 if(document.menu.length === 0)
                 {

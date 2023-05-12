@@ -13,43 +13,43 @@ menuCollection.deleteMany({})
 // Insert all the restaurant data to the DB
 menuCollection.insertMany(
     [{
-        restaurantId: 1,
-        menuId: 1,
+        resId: "1",
+        menuId: "1",
         name: "Snacks"
     },
     {
-        restaurantId: 1,
-        menuId: 2,
+        resId: "1",
+        menuId: "2",
         name: "Lunch"
     },
     {
-        restaurantId: 1,
-        menuId: 3,
+        resId: "1",
+        menuId: "3",
         name: "Dinner"
     },
     {
-        restaurantId: 2,
-        menuId: 4,
+        resId: "2",
+        menuId: "4",
         name: "Snacks"
     },
     {
-        restaurantId: 2,
-        menuId: 5,
+        resId: "2",
+        menuId: "5",
         name: "Lunch"
     },
     {
-        restaurantId: 3,
-        menuId: 6,
+        resId: "3",
+        menuId: "6",
         name: "Lunch"
     },
     {
-        restaurantId: 4,
-        menuId: 7,
+        resId: "4",
+        menuId: "7",
         name: "Lunch"
     },
     {
-        restaurantId: 5,
-        menuId: 8,
+        resId: "5",
+        menuId: "8",
         name: "Lunch"
     }]
 )
@@ -59,8 +59,8 @@ menuItemsCollection = db.getCollection('menuItems') || db.createCollection('menu
 menuItemsCollection.deleteMany({})
 menuItemsCollection.insertMany(
     [{
-        menuId: 1,
-        restaurantId: 1,
+        menuId: "1",
+        resId: "1",
         menu: [
             {
                 category: "Antipasti",
@@ -100,8 +100,8 @@ menuItemsCollection.insertMany(
         ]
     },
     {
-        menuId:2,
-        restaurantId: 1,
+        menuId:"2",
+        resId: "1",
         menu: [
             {
                 category: "Specials",
@@ -141,8 +141,8 @@ menuItemsCollection.insertMany(
         ]
     },
     {
-        menuId:3,
-        restaurantId: 1,
+        menuId:"3",
+        resId: "1",
         menu: [
             {
               category: "Specials",
@@ -168,8 +168,8 @@ menuItemsCollection.insertMany(
         ]
     },    
     {
-        menuId:4,
-        restaurantId: 2,
+        menuId:"4",
+        resId: "2",
         menu: [
             {
               category: "Soups",
@@ -209,8 +209,8 @@ menuItemsCollection.insertMany(
         ]
     },
     {
-        menuId: 5,
-        restaurantId: 2,
+        menuId: "5",
+        resId: "2",
         menu: [
             {
                 category: "Appetizers",
@@ -243,8 +243,8 @@ menuItemsCollection.insertMany(
         ]
     },
     {
-        menuId: 6,
-        restaurantId: 3,
+        menuId: "6",
+        resId: "3",
         menu: [
             {
                 category: "Appetizers",
@@ -278,8 +278,8 @@ menuItemsCollection.insertMany(
     },
 
     {
-        menuId: 7,
-        restaurantId: 4,
+        menuId: "7",
+        resId: "4",
         menu: [
             {
                 category: "Appetizers",
@@ -312,8 +312,8 @@ menuItemsCollection.insertMany(
         ]
     },
     {
-        menuId: 8,
-        restaurantId: 5,
+        menuId: "8",
+        resId: "5",
         menu: [
             {
                 category: "Appetizers",

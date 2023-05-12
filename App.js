@@ -31,6 +31,7 @@ const MenuItemsModel_1 = require("./models/MenuItemsModel");
 const express = require("express");
 const bodyParser = __importStar(require("body-parser"));
 const OrderModel_1 = require("./models/OrderModel");
+const CustomerUserModel_1 = require("./models/CustomerUserModel");
 // Class App which creates and configure the express application
 class App {
     // Constructor which runs the configuration on the express application and calls the routes function
@@ -40,6 +41,7 @@ class App {
         this.Menu = new MenuModel_1.MenuModel();
         this.MenuItems = new MenuItemsModel_1.MenuItemsModel();
         this.Orders = new OrderModel_1.OrderModel();
+        this.Customer = new CustomerUserModel_1.CustomerUserModel();
         this.middleware();
         this.routes();
     }
@@ -62,22 +64,6 @@ class App {
             let resId = req.params.resId;
             console.log('Query single restaurant with id: ' + resId);
             this.Restaurants.getRestaurantDetailsById(res, { resId: resId });
-        });
-        // Retrieve Menu
-        router.get("/restaurants/:resId/menu", (req, res) => {
-            var resId = req.params.resId;
-            console.log("Query single menu with restid: " + resId);
-            this.Menu.retrieveMenu(res, { resId: resId });
-        });
-        // Retrieve Menu Items
-        router.get("/restaurants/:resId/menu/:menuId", (req, res) => {
-            var resId = req.params.resId;
-            var menuId = req.params.menuId;
-            console.log("Query single menu with restid: " + resId);
-            this.MenuItems.retrieveMenuItems(res, {
-                menuId: menuId,
-                resId: resId,
-            });
         });
         // Routing post order requests to save data
         //Create restaurant 
@@ -137,6 +123,11 @@ class App {
         // post order
         router.post("/orders", (request, response) => {
             this.Orders.createOrder(request, response);
+        });
+        // post customer
+        router.post("/addcustomer", (request, response) => {
+            console.log("Adding New Customer");
+            this.Customer.createCustomer(request, response);
         });
         this.expressApp.use("/", router);
     }
