@@ -31,6 +31,7 @@ const MenuItemsModel_1 = require("./models/MenuItemsModel");
 const express = require("express");
 const bodyParser = __importStar(require("body-parser"));
 const OrderModel_1 = require("./models/OrderModel");
+const CustomerUserModel_1 = require("./models/CustomerUserModel");
 // Class App which creates and configure the express application
 class App {
     // Constructor which runs the configuration on the express application and calls the routes function
@@ -40,6 +41,7 @@ class App {
         this.Menu = new MenuModel_1.MenuModel();
         this.MenuItems = new MenuItemsModel_1.MenuItemsModel();
         this.Orders = new OrderModel_1.OrderModel();
+        this.Customer = new CustomerUserModel_1.CustomerUserModel();
         this.middleware();
         this.routes();
     }
@@ -57,20 +59,32 @@ class App {
             console.log("Query all the restaurants");
             this.Restaurants.retrieveAllRestaurants(res);
         });
-        // Retrieve specific restaurant details
-        router.get('/restaurants/:id', (req, res) => {
-            let id = req.params.id;
+        //Retrieve specific restaurant details
+        router.get('/restaurants/:resId', (req, res) => {
+            var id = req.params.resId;
             console.log('Query single restaurant with id: ' + id);
-            this.Restaurants.getRestaurantDetailsById(res, { id: id });
+            this.Restaurants.getRestaurantDetailsById(res, { resId: id });
         });
-        // Retrieve Menu
-        router.get("/restaurant/:restaurantId/menu", (req, res) => {
+        //Create restaurant 
+        router.post("/restaurants", (request, response) => {
+            this.Restaurants.createRestaurant(request, response);
+        });
+        //Delete Restaurant
+        router.delete("/restaurants/:resId", (req, res) => {
+            this.Restaurants.deleteRestaurant(req, res);
+        });
+        //Update restaurant 
+        router.put("/restaurants/:resId", (req, res) => {
+            this.Restaurants.updateRestaurant(req, res);
+        });
+        //Retrieve Menu
+        router.get("/restaurants/:restaurantId/menu", (req, res) => {
             var restaurantId = req.params.restaurantId;
             console.log("Query single menu with restid: " + restaurantId);
             this.Menu.retrieveMenu(res, { restaurantId: restaurantId });
         });
         // Retrieve Menu Items
-        router.get("/restaurant/:restaurantId/menu/:menuId", (req, res) => {
+        router.get("/restaurants/:restaurantId/menu/:menuId", (req, res) => {
             var restaurantId = req.params.restaurantId;
             var menuId = req.params.menuId;
             console.log("Query single menu with restid: " + restaurantId);
@@ -82,6 +96,11 @@ class App {
         // Routing post order requests to save data
         router.post("/orders", (request, response) => {
             this.Orders.createOrder(request, response);
+        });
+        // post customer
+        router.post("/addcustomer", (request, response) => {
+            console.log("Adding New Customer");
+            this.Customer.createCustomer(request, response);
         });
         this.expressApp.use("/", router);
     }

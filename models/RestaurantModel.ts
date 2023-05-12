@@ -2,6 +2,7 @@
 import Mongoose from 'mongoose';
 import { DbConnection } from "../DbConnection";
 import { IRestaurantModel } from '../interfaces/IRestaurantModel';
+import { v4 as uuidv4 } from "uuid";
 
 // Mongoose connections and object
 let mongooseConnection = DbConnection.mongooseConnection;
@@ -22,12 +23,12 @@ class RestaurantModel {
     public createSchema(): void {
         this.schema = new Mongoose.Schema(
             {
-                id: Number,
+                resId: String,
                 name: String,
                 image: String,
                 location: String,
-                rating: Number,
-                reviews: Number,
+                rating:Number,
+                reviews:Number,
                 cost: String,
                 cuisines: String,
                 contact: String,
@@ -71,6 +72,125 @@ class RestaurantModel {
           response.status(500).json({ message: "Internal server error while retrieving restaurant details" }); 
         }
     }
+    // Delete specific restaurant
+    public async deleteRestaurant(request: any, response: any): Promise<any> {
+        try {
+            const restaurantId = request.params.resId;
+            console.log(restaurantId)
+            const result = await this.model.deleteOne({ resId: restaurantId });
+            if (result.deletedCount === 1) {
+                response.status(200).json({ message: `Restaurant with ID ${restaurantId} deleted successfully` });
+            } else {
+                response.status(404).json({ message: `Restaurant with ID ${restaurantId} not found` });
+            }
+        } catch (error) {
+            console.error(error);
+            response.status(500).json({ message: "Internal server error while deleting restaurant" });
+        }
+    }
+    
+   // Add new restaurant
+    public async createRestaurant(request: any, response: any): Promise<any> {
+        try {
+          const resId = uuidv4();
+          const { name,  image,location,rating,reviews,cost,cuisines,contact, neighborhood, hours, parkingdetails,isValetPark,numberOfTables} = request.body;
+          if (!name|| !image || !location|| !rating|| !reviews || !cost || !cuisines || !contact|| !neighborhood || !hours || !parkingdetails|| !isValetPark||!numberOfTables) {
+            return response.status(400).json({ message: "Please fill all fields" });
+          }
+          const restaurant = new this.model({
+            resId,
+            name,
+            image,
+            location,
+            rating,
+            reviews,
+            cost,
+            cuisines,
+            contact,
+            neighborhood,
+            hours,
+            parkingdetails,
+            isValetPark,
+            numberOfTables,
+          });
+          await restaurant.save();
+          response.status(200).json({
+            message: " Congrats",
+            restaurant: {
+                resId,
+                name,
+                image,
+                location,
+                rating,
+                reviews,
+                cost,
+                cuisines,
+                contact,
+                neighborhood,
+                hours,
+                parkingdetails,
+                isValetPark,
+                numberOfTables,
+            },
+          });
+          // console.log(response);
+        } catch (error) {
+          console.error(error);
+          console.log(error);
+          response.sendStatus(500);
+        }
+      }
+
+
+    // Update restaurant 
+    public async updateRestaurant(req: any, res: any): Promise<any> {
+        try {
+          const resId = req.params.resId;
+      
+          const { name, image, location, rating, reviews, cost, cuisines, contact, neighborhood, hours, parkingdetails, isValetPark, numberOfTables } = req.body;
+      
+          if (!name || !image || !location || !rating || !reviews || !cost || !cuisines || !contact || !neighborhood || !hours || !parkingdetails || !isValetPark || !numberOfTables) {
+            return res.status(400).json({ message: "Please fill all fields" });
+          }
+      
+          const updatedRestaurant = await this.model.findOneAndUpdate(
+            { resId },
+            {
+              $set: {
+                name,
+                image,
+                location,
+                rating,
+                reviews,
+                cost,
+                cuisines,
+                contact,
+                neighborhood,
+                hours,
+                parkingdetails,
+                isValetPark,
+                numberOfTables,
+              },
+            },
+            { new: true }
+          );
+      
+          if (!updatedRestaurant) {
+            return res.status(404).json({ message: "Restaurant not found" });
+          }
+      
+          res.status(200).json({
+            message: "Restaurant updated successfully",
+            restaurant: updatedRestaurant,
+          });
+        } catch (error) {
+          console.error(error);
+          res.sendStatus(500);
+        }
+      }
+      
+    // functions related to filtering restaurants
+
 }
 
 export {RestaurantModel};
