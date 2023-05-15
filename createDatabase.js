@@ -33,7 +33,7 @@ const authenticationDB = "admin";
 const database = "dineEasy";
 const collectionScriptDirectory = "CreateDb";
 const createUserFile = "adminDbUser.js";
-const updateCollectionFiles = ["createRestaurantData.js", "createMenuData.js"];
+const updateCollectionFiles = ["createRestaurantData.js", "createMenuData.js", "createOrderDetails.js"];
 // User with correct privilieges must be created before updating databases
 const pathToScript = path.join(collectionScriptDirectory, createUserFile);
 const command = `mongosh --host ${host} --port ${port} ${authenticationDB} ${pathToScript}`;

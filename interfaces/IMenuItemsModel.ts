@@ -2,14 +2,14 @@ import Mongoose = require("mongoose");
 
 interface IMenuItemsModel extends Mongoose.Document {
    
-    menuId: Number
-    restaurantId: Number
+    menuId: String
+    resId: String
     menu: [ {
-            category: string;
-            name: string;
+            category: String;
+            name: String;
             price: number;
             is_veg: boolean;
-            ingredients: string;
+            ingredients: String;
     }];
 }
 export {IMenuItemsModel};
