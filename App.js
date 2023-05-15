@@ -22,6 +22,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
 //Imports
@@ -32,6 +35,7 @@ const express = require("express");
 const bodyParser = __importStar(require("body-parser"));
 const OrderModel_1 = require("./models/OrderModel");
 const CustomerUserModel_1 = require("./models/CustomerUserModel");
+const cors_1 = __importDefault(require("cors"));
 // Class App which creates and configure the express application
 class App {
     // Constructor which runs the configuration on the express application and calls the routes function
@@ -50,6 +54,7 @@ class App {
         this.expressApp.use(bodyParser.json());
         this.expressApp.use(bodyParser.urlencoded({ extended: true }));
         this.expressApp.use(express.static('pages'));
+        this.expressApp.use((0, cors_1.default)());
     }
     // Api Endpoints....
     routes() {

@@ -6,6 +6,7 @@ import express = require("express");
 import * as bodyParser from "body-parser";
 import { OrderModel } from "./models/OrderModel";
 import { CustomerUserModel } from "./models/CustomerUserModel";
+import cors from "cors";
 
 // Class App which creates and configure the express application
 class App {
@@ -33,6 +34,7 @@ class App {
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: true }));
     this.expressApp.use(express.static('pages'));
+    this.expressApp.use(cors());
   }
 
   // Api Endpoints....

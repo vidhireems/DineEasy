@@ -118,7 +118,7 @@ class MenuItemsModel {
                     }
                 });
                 if (result.modifiedCount > 0) {
-                    //TODO: If all menu items are deleted then also delete the menuitem document and menu document
+                    //If all menu items are deleted then also delete the menuitem document and menu document
                     const document = yield this.model.findOne({ resId, menuId });
                     if (document.menu.length === 0) {
                         yield this.model.deleteOne({ resId, menuId });
