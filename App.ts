@@ -109,13 +109,15 @@ class App {
       });
     });
 
+
+    // post- createorder
+
     // Create menu Items
     router.post("/restaurants/:resId/menu/:menuId/items", (req, res) => {
       this.MenuItems.createMenuItems(req, res);
     });
 
    // Delete menu Items
-
     router.delete("/restaurants/:resId/menu/:menuId/items", (req, res) => {
       this.MenuItems.deleteMenuItems(req, res);
      });
@@ -130,11 +132,17 @@ class App {
       this.Orders.createOrder(request, response);
     });
 
-    // post customer
+    // post- create customer
     router.post("/addcustomer", (request, response) => {
-      console.log("Adding New Customer");
+      console.log("Adding New Customer:...");
       this.Customer.createCustomer(request, response);
     });
+
+    //post- customer update
+    router.post("/updatecustomer/:customerId", (req, res) =>{
+      console.log("Update Customer:...");
+      this.Customer.updateCustomer(req,res);
+    })
 
     this.expressApp.use("/", router);
   }

@@ -30,7 +30,6 @@ class PremCustomerModel {
     createSchema() {
         this.schema = new mongoose_1.default.Schema({
             id: String,
-            isValeParking: Boolean,
             tableNumber: Number,
             numberOfPeople: Number,
         }, { collection: 'PremCustomer' });

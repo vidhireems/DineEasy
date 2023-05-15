@@ -17,6 +17,7 @@ exports.CustomerUserModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const DbConnection_1 = require("../DbConnection");
 const uuid_1 = require("uuid");
+const UserModel_1 = require("./UserModel");
 //Mongoose connections and object
 let mongooseConnection = DbConnection_1.DbConnection.mongooseConnection;
 let mongooseObj = DbConnection_1.DbConnection.mongooseInstance;
@@ -78,10 +79,28 @@ class CustomerUserModel {
             try {
                 const customerId = (0, uuid_1.v4)();
                 console.log(request.body);
-                const { address, contactNumber } = request.body;
-                if (!address || !contactNumber) {
+                const { address, contactNumber, name, email, password } = request.body;
+                if (!address || !contactNumber || !name || !email || !password || !customerId) {
                     return response.status(400).json({ message: "Please fill all fields" });
                 }
+                //Creating data for createUser
+                const userData = {
+                    "customerId": customerId,
+                    "userType": "Customer",
+                    "name": request.body.name,
+                    "email": request.body.email,
+                    "password": request.body.password
+                };
+                //sending data to user model to create user
+                const userModel = new UserModel_1.UserModel();
+                const userResponse = yield userModel.createCustomerUser(userData);
+                //check if the user was made in user collection
+                if (userResponse.message != "User Created successfully") {
+                    response.status(500).json({
+                        message: "User not created",
+                    });
+                }
+                console.log("User Created:...");
                 const customer = new this.model({
                     customerId,
                     address,
@@ -91,8 +110,9 @@ class CustomerUserModel {
                     referenceCustomerTypeId: "",
                 });
                 yield customer.save();
+                console.log("Customer Created:...");
                 response.status(200).json({
-                    message: "User Created successfully",
+                    message: "Customer Created successfully",
                     customer: {
                         customerId,
                         address,
@@ -104,7 +124,45 @@ class CustomerUserModel {
                 });
             }
             catch (error) {
-                response.error(500).json({ message: "Error Creating User..." });
+                response.error(500).json({ message: "Error Creating Customer..." });
+            }
+        });
+    }
+    //update customer
+    //only update address, contactnumber, email, password 
+    updateCustomer(request, response) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const customerId = request.params.customerId;
+                const { address, contactNumber, name, email, password } = request.body;
+                if (!customerId || !address || !contactNumber || !email || !password || !name)
+                    return response.status(400).json({ message: "Please fill all the fields" });
+                //find the user and update it in user collection
+                const userData = {
+                    "customerId": customerId,
+                    "name": name,
+                    "email": email,
+                    "password": password
+                };
+                const userModel = new UserModel_1.UserModel();
+                const userUpdateResponse = yield userModel.updateCustomerUser(userData);
+                if (userUpdateResponse.message != "User Updated Successfully") {
+                    response.status(500).json({
+                        message: "User not Updates",
+                    });
+                }
+                //find the user and update it in customer collection
+                const updateCustomer = yield this.model.findOneAndUpdate({ customerId }, { address, contactNumber }, { new: true });
+                if (!updateCustomer)
+                    return response.status(400).json({ message: "Customer Not found" });
+                return response.status(200).json({
+                    message: "Customer Updated",
+                    customer: updateCustomer,
+                });
+            }
+            catch (error) {
+                console.log("Error Updating Customer:...");
+                response.status(500).json({ message: "Error Updating Customer" });
             }
         });
     }

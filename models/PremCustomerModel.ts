@@ -23,8 +23,7 @@ class PremCustomerModel {
         this.schema = new Mongoose.Schema(
             {
                 id: String,
-                isValeParking: Boolean,
-                tableNumber: Number,
+                tableNumber: Number,  
                 numberOfPeople: Number,
             }, {collection: 'PremCustomer'}
         );
@@ -52,6 +51,7 @@ class PremCustomerModel {
         }
     }
     //add PremCustomer
+    
 
 }
 

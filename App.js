@@ -113,6 +113,9 @@ class App {
                 resId: resId,
             });
         });
+
+        // post- createorder
+
         // Create menu Items
         router.post("/restaurants/:resId/menu/:menuId/items", (req, res) => {
             this.MenuItems.createMenuItems(req, res);
@@ -126,13 +129,23 @@ class App {
             this.MenuItems.updateMenuItems(req, res);
         });
         // post order
+
         router.post("/orders", (request, response) => {
             this.Orders.createOrder(request, response);
         });
-        // post customer
+        // post- create customer
         router.post("/addcustomer", (request, response) => {
+ dev/kapish-patel/creating_schemas
+            console.log("Adding New Customer:...");
+
             console.log("Adding New Customer");
+ main
             this.Customer.createCustomer(request, response);
+        });
+        //post- customer update
+        router.post("/updatecustomer/:customerId", (req, res) => {
+            console.log("Update Customer:...");
+            this.Customer.updateCustomer(req, res);
         });
         this.expressApp.use("/", router);
     }

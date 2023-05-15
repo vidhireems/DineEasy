@@ -3,11 +3,11 @@ import Mongoose from 'mongoose';
 
 //Interface for restaurant model
 interface IUserModel extends Mongoose.Document {
-    id: String;
+    userId: String;
     name: String;
-    Email: String;
+    email: String;
     Password: String;
-    User_Type: String;
-    Refrence_User_Type_Id: String;
+    userType: String;
+    refrenceUserTypeId: String;
 }
 export {IUserModel};
