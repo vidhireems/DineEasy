@@ -159,6 +159,7 @@ class RestaurantModel {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const resId = req.params.resId;
+                console.log(req.body);
                 const { name, image, location, rating, reviews, cost, cuisines, contact, neighborhood, hours, parkingdetails, isValetPark, numberOfTables } = req.body;
                 if (!name || !image || !location || !rating || !reviews || !cost || !cuisines || !contact || !neighborhood || !hours || !parkingdetails || !isValetPark || !numberOfTables) {
                     return res.status(400).json({ message: "Please fill all fields" });
