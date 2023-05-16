@@ -106,8 +106,10 @@ class RestaurantModel {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const resId = (0, uuid_1.v4)();
+                console.log("in model");
+                console.log(request.body);
                 const { name, image, location, rating, reviews, cost, cuisines, contact, neighborhood, hours, parkingdetails, isValetPark, numberOfTables } = request.body;
-                if (!name || !image || !location || !rating || !reviews || !cost || !cuisines || !contact || !neighborhood || !hours || !parkingdetails || !isValetPark || !numberOfTables) {
+                if (!name || !image || !location || !rating || !reviews || !cost || !cuisines || !contact || !neighborhood || !hours || !parkingdetails || !numberOfTables) {
                     return response.status(400).json({ message: "Please fill all fields" });
                 }
                 const restaurant = new this.model({

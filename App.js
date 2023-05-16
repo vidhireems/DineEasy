@@ -53,7 +53,7 @@ class App {
     middleware() {
         this.expressApp.use(bodyParser.json());
         this.expressApp.use(bodyParser.urlencoded({ extended: true }));
-        this.expressApp.use(express.static('pages'));
+        this.expressApp.use(express.static("pages"));
         this.expressApp.use((0, cors_1.default)());
     }
     // Api Endpoints....
@@ -65,15 +65,16 @@ class App {
             this.Restaurants.retrieveAllRestaurants(res);
         });
         // Retrieve specific restaurant details
-        router.get('/restaurants/:resId', (req, res) => {
+        router.get("/restaurants/:resId", (req, res) => {
             let resId = req.params.resId;
-            console.log('Query single restaurant with id: ' + resId);
+            console.log("Query single restaurant with id: " + resId);
             this.Restaurants.getRestaurantDetailsById(res, { resId: resId });
         });
         // Routing post order requests to save data
-        //Create restaurant 
+        //Create restaurant
         router.post("/restaurants", (request, response) => {
             console.log("Creating restaurant");
+            //console.log(request.body);
             this.Restaurants.createRestaurant(request, response);
         });
         //Delete Restaurant
@@ -84,7 +85,7 @@ class App {
                 });
             });
         });
-        //Update restaurant 
+        //Update restaurant
         router.put("/restaurants/:resId", (req, res) => {
             this.Restaurants.updateRestaurant(req, res);
         });
