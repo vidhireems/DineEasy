@@ -96,7 +96,7 @@ class RestaurantModel {
     public async createRestaurant(request: any, response: any): Promise<any> {
         try {
           const resId = uuidv4();
-          const { name,  image,location,rating,reviews,cost,cuisines,contact, neighborhood, hours, parkingdetails,isValetPark,numberOfTables} = request.body;
+          const { name, image, location, rating, reviews, cost, cuisines,contact, neighborhood, hours, parkingdetails,isValetPark,numberOfTables} = request.body;
           if (!name|| !image || !location|| !rating|| !reviews || !cost || !cuisines || !contact|| !neighborhood || !hours || !parkingdetails|| !isValetPark||!numberOfTables) {
             return response.status(400).json({ message: "Please fill all fields" });
           }
@@ -148,7 +148,7 @@ class RestaurantModel {
     public async updateRestaurant(req: any, res: any): Promise<any> {
         try {
           const resId = req.params.resId;
-      
+          console.log(req.body);
           const { name, image, location, rating, reviews, cost, cuisines, contact, neighborhood, hours, parkingdetails, isValetPark, numberOfTables } = req.body;
       
           if (!name || !image || !location || !rating || !reviews || !cost || !cuisines || !contact || !neighborhood || !hours || !parkingdetails || !isValetPark || !numberOfTables) {

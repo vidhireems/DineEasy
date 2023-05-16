@@ -52,12 +52,13 @@ class App {
       let resId = req.params.resId;
       console.log('Query single restaurant with id: ' + resId);
       this.Restaurants.getRestaurantDetailsById(res, {resId: resId});
-  });
+    });
   
 
     // Routing post order requests to save data
     //Create restaurant 
     router.post("/restaurants", (request:any, response:any) => {
+      console.log("Creating restaurant");
       this.Restaurants.createRestaurant(request, response);
     });
 
@@ -68,13 +69,12 @@ class App {
           this.Restaurants.deleteRestaurant(req,res)
         });
       });
-   });
+    });
 
     //Update restaurant 
-   router.put("/restaurants/:resId", (req:any, res:any) => {
-    this.Restaurants.updateRestaurant(req,res)
-  });
-  
+    router.put("/restaurants/:resId", (req:any, res:any) => {
+      this.Restaurants.updateRestaurant(req,res)
+    });
   
     //Retrieve Menu
     router.get("/restaurants/:resId/menu", (req:any, res:any) => {
@@ -84,7 +84,6 @@ class App {
     });
 
     //Create menu
-
     router.post("/restaurants/:resId/menu", (req:any, res:any) => {
       this.Menu.createMenu(req, res);
     });
@@ -96,19 +95,16 @@ class App {
       });
     });
 
-
-
     //Retrieve Menu Items
     router.get("/restaurants/:resId/menu/:menuId/items", (req:any, res:any) => {
       var resId = req.params.resId;
       var menuId = req.params.menuId;
       console.log("Query single menu with restid: " + resId);
       this.MenuItems.retrieveMenuItems(res, {
-        menuId: menuId,
-        resId: resId,
+      menuId: menuId,
+      resId: resId,
       });
     });
-
 
     // post- createorder
 
@@ -117,15 +113,15 @@ class App {
       this.MenuItems.createMenuItems(req, res);
     });
 
-   // Delete menu Items
+    // Delete menu Items
     router.delete("/restaurants/:resId/menu/:menuId/items", (req:any, res:any) => {
       this.MenuItems.deleteMenuItems(req, res);
-     });
+    });
 
     // update menu Items
     router.patch("/restaurants/:resId/menu/:menuId/items", (req:any, res:any) => {
       this.MenuItems.updateMenuItems(req, res);
-     });
+    });
 
     // post order
     router.post("/orders", (request:any, response:any) => {
@@ -142,7 +138,7 @@ class App {
     router.post("/updatecustomer/:customerId", (req:any, res:any) =>{
       console.log("Update Customer:...");
       this.Customer.updateCustomer(req,res);
-    })
+    });
 
     this.expressApp.use("/", router);
   }
