@@ -96,8 +96,10 @@ class RestaurantModel {
     public async createRestaurant(request: any, response: any): Promise<any> {
         try {
           const resId = uuidv4();
-          const { name, image, location, rating, reviews, cost, cuisines,contact, neighborhood, hours, parkingdetails,isValetPark,numberOfTables} = request.body;
-          if (!name|| !image || !location|| !rating|| !reviews || !cost || !cuisines || !contact|| !neighborhood || !hours || !parkingdetails|| !isValetPark||!numberOfTables) {
+          console.log("in model");
+          console.log(request.body);
+          const { name, image, location, rating, reviews, cost, cuisines, contact, neighborhood, hours, parkingdetails, isValetPark, numberOfTables} = request.body;
+          if (!name || !image || !location || !rating || !reviews || !cost || !cuisines || !contact || !neighborhood || !hours || !parkingdetails || !numberOfTables) {
             return response.status(400).json({ message: "Please fill all fields" });
           }
           const restaurant = new this.model({
@@ -151,7 +153,7 @@ class RestaurantModel {
           console.log(req.body);
           const { name, image, location, rating, reviews, cost, cuisines, contact, neighborhood, hours, parkingdetails, isValetPark, numberOfTables } = req.body;
       
-          if (!name || !image || !location || !rating || !reviews || !cost || !cuisines || !contact || !neighborhood || !hours || !parkingdetails || !isValetPark || !numberOfTables) {
+          if (!name || !image || !location || !rating || !reviews || !cost || !cuisines || !contact || !neighborhood || !hours || !parkingdetails || !numberOfTables) {
             return res.status(400).json({ message: "Please fill all fields" });
           }
       
