@@ -45,7 +45,11 @@ class RestaurantModel {
 
     // Function to create model for the reataurant interface and schema
     public createModel(): void {
-        this.model = mongooseConnection.model<IRestaurantModel>("restaurant", this.schema);
+      if (!mongooseConnection.models.Restaurant) {
+        this.model = mongooseConnection.model<IRestaurantModel>("Restaurant", this.schema);
+      } else {
+        this.model = mongooseConnection.models.Restaurant;
+      }
     }
     
     // Function for retrieving all the restaurants(have to use promise after mongoose version 6)

@@ -48,7 +48,12 @@ class RestaurantModel {
     }
     // Function to create model for the reataurant interface and schema
     createModel() {
-        this.model = mongooseConnection.model("restaurant", this.schema);
+        if (!mongooseConnection.models.Restaurant) {
+            this.model = mongooseConnection.model("Restaurant", this.schema);
+        }
+        else {
+            this.model = mongooseConnection.models.Restaurant;
+        }
     }
     // Function for retrieving all the restaurants(have to use promise after mongoose version 6)
     retrieveAllRestaurants(response) {
@@ -163,7 +168,7 @@ class RestaurantModel {
                 const resId = req.params.resId;
                 console.log(req.body);
                 const { name, image, location, rating, reviews, cost, cuisines, contact, neighborhood, hours, parkingdetails, isValetPark, numberOfTables } = req.body;
-                if (!name || !image || !location || !rating || !reviews || !cost || !cuisines || !contact || !neighborhood || !hours || !parkingdetails || !isValetPark || !numberOfTables) {
+                if (!name || !image || !location || !rating || !reviews || !cost || !cuisines || !contact || !neighborhood || !hours || !parkingdetails || !numberOfTables) {
                     return res.status(400).json({ message: "Please fill all fields" });
                 }
                 const updatedRestaurant = yield this.model.findOneAndUpdate({ resId }, {
