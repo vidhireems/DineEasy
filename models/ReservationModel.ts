@@ -55,13 +55,10 @@ class ReservationModel {
     );
   }
 
-  // function for retriving specific user Reservation
-  private async resetTableCount(): Promise<void> {
-    try {
-      // Retrieve all restaurants
-      const restaurants = await this.restaurantModel.model.find({});
 
-      // Reset table count for each restaurant to its original value at 12:01 AM
+  private async resetTableCount(): Promise<void> {
+    try { 
+      const restaurants = await this.restaurantModel.model.find({});
       for (const restaurant of restaurants) {
         const originalTableCount = restaurant.originalNumberOfTables;
         restaurant.numberOfTables = originalTableCount;
