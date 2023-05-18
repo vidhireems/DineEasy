@@ -141,7 +141,8 @@ class App {
     );
 
     // post order - figure out the route
-    router.post("/restaurant/:resId/order", (request: any, response: any) => {
+    router.post("/restaurants/:resId/menu/:menuid/items/order", (request: any, response: any) => {
+      console.log("posting order");
       this.Orders.createOrder(request, response);
     });
 
