@@ -116,7 +116,6 @@ class App {
                 resId: resId,
             });
         });
-        // post- createorder
         // Create menu Items
         router.post("/restaurants/:resId/menu/:menuId/items", (req, res) => {
             this.MenuItems.createMenuItems(req, res);
@@ -129,8 +128,8 @@ class App {
         router.patch("/restaurants/:resId/menu/:menuId/items", (req, res) => {
             this.MenuItems.updateMenuItems(req, res);
         });
-        // post order
-        router.post("/orders", (request, response) => {
+        // post order - figure out the route
+        router.post("/restaurant/:resId/order", (request, response) => {
             this.Orders.createOrder(request, response);
         });
         // post- create customer

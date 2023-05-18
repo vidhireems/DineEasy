@@ -36,7 +36,7 @@ class OrderModel {
         quantity: Number,
         itemIds: [String],
       },
-      { collection: "order", timestamps: true }
+      { collection: "order" }
     );
   }
 
@@ -49,10 +49,10 @@ class OrderModel {
     try {
       const orderId = uuidv4();
       const restaurantId = request.params.resId;
-      const { customerId, orderDate, status, orderType, quantity, itemIds } = request.body;
+      const { customerId, quantity, itemIds } = request.body;
   
       // Check if all required fields are provided
-      if (!customerId || !status || !orderType || !quantity || !itemIds) {
+      if (!customerId || !quantity || !itemIds) {
         return response.status(400).json({ message: "Please fill all fields" });
       }
   
@@ -60,9 +60,6 @@ class OrderModel {
         orderId,
         resId: restaurantId,
         customerId,
-        orderDate: Date.now,
-        status: "Received",
-        orderType: "Normal",
         quantity,
         itemIds,
       });
@@ -75,9 +72,9 @@ class OrderModel {
           orderId,
           resId: restaurantId,
           customerId,
-          orderDate,
-          status,
-          orderType,
+          orderDate: Date.now,
+          status: "Received",
+          orderType: "Normal",
           quantity,
           itemIds,
         },

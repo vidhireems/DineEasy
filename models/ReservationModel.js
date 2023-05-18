@@ -53,13 +53,10 @@ class ReservationModel {
     createModel() {
         this.model = mongooseConnection.model("Reservation", this.schema);
     }
-    // function for retriving specific user Reservation
     resetTableCount() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // Retrieve all restaurants
                 const restaurants = yield this.restaurantModel.model.find({});
-                // Reset table count for each restaurant to its original value at 12:01 AM
                 for (const restaurant of restaurants) {
                     const originalTableCount = restaurant.originalNumberOfTables;
                     restaurant.numberOfTables = originalTableCount;
@@ -118,7 +115,26 @@ class ReservationModel {
                 if (!customer) {
                     return response.status(404).json({ message: "Customer not found" });
                 }
-                const tableNumber = getRandomInt(1, restaurant.numberOfTables);
+                let tableNumber = getRandomInt(1, restaurant.numberOfTables);
+                const maxAttempts = restaurant.numberOfTables;
+                let attempts = 0;
+                while (attempts < maxAttempts) {
+                    const existingReservation = yield this.model.findOne({
+                        resId,
+                        tableNumber,
+                        status: { $ne: "canceled" },
+                    });
+                    if (!existingReservation) {
+                        break;
+                    }
+                    tableNumber = getRandomInt(1, restaurant.numberOfTables);
+                    attempts++;
+                }
+                if (attempts === maxAttempts) {
+                    return response
+                        .status(400)
+                        .json({ message: "Cannot reserve. No tables available" });
+                }
                 const reservation = new this.model({
                     customerId,
                     reservationId,
@@ -200,10 +216,12 @@ class ReservationModel {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { reservationId } = request.params;
-                const canceledReservation = yield this.model.findOneAndUpdate({ reservationId }, { status: "canceled" }, { new: true });
+                const canceledReservation = yield this.model.findOneAndUpdate({ reservationId }, { status: "canceled" }, { new: true }).select("resId");
                 if (!canceledReservation) {
                     return response.status(404).json({ message: "Reservation not found" });
                 }
+                const RestaurantModel = mongoose_1.default.model("Restaurant"); // Assuming the name of the Restaurant model is "Restaurant"
+                yield RestaurantModel.updateOne({ resId: canceledReservation.resId }, { $inc: { numberOfTables: 1 } });
                 return response.status(200).json({
                     message: "Reservation canceled successfully",
                     reservation: canceledReservation,
