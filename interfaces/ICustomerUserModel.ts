@@ -3,7 +3,8 @@ import Mongoose from 'mongoose';
 
 //Interface for restaurant model
 interface ICustomerUserModel extends Mongoose.Document {
-    id: String;
+    name: String;
+    customerId: String;
     address: String;
     contactNumber: String;
     isCheckedIn: Boolean;

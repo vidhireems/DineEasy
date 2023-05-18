@@ -31,26 +31,32 @@ class CustomerUserModel {
     //function to create the schema for restaurants
     createSchema() {
         this.schema = new mongoose_1.default.Schema({
+            name: { type: String, require: true },
             customerId: { type: String, require: true },
             address: { type: String, require: true },
             contactNumber: { type: String, require: true },
             isCheckedIn: {
                 type: Boolean,
-                default: false
+                default: false,
             },
             customerType: {
                 type: String,
-                default: "Freemium"
+                default: "Freemium",
             },
             refrenceCustomerTypeId: {
                 type: String,
-                default: 'N/A'
+                default: "N/A",
             },
-        }, { collection: 'CustomerUser' });
+        }, { collection: "CustomerUser" });
     }
-    //function to create model 
+    //function to create model
     createModel() {
-        this.model = mongooseConnection.model("CustomerUser", this.schema);
+        if (!mongooseConnection.models.CustomerUser) {
+            this.model = mongooseConnection.model("CustomerUser", this.schema);
+        }
+        else {
+            this.model = mongooseConnection.models.CustomerUser;
+        }
     }
     // function for retriving specific customer
     retrieveCustomer(response, filter) {
@@ -69,7 +75,11 @@ class CustomerUserModel {
             }
             catch (err) {
                 console.error(err);
-                response.sendStatus(500).send({ message: "Internal server error while retrieving Customer detail" });
+                response
+                    .sendStatus(500)
+                    .send({
+                    message: "Internal server error while retrieving Customer detail",
+                });
             }
         });
     }
@@ -80,16 +90,21 @@ class CustomerUserModel {
                 const customerId = (0, uuid_1.v4)();
                 console.log(request.body);
                 const { address, contactNumber, name, email, password } = request.body;
-                if (!address || !contactNumber || !name || !email || !password || !customerId) {
+                if (!address ||
+                    !contactNumber ||
+                    !name ||
+                    !email ||
+                    !password ||
+                    !customerId) {
                     return response.status(400).json({ message: "Please fill all fields" });
                 }
                 //Creating data for createUser
                 const userData = {
-                    "customerId": customerId,
-                    "userType": "Customer",
-                    "name": request.body.name,
-                    "email": request.body.email,
-                    "password": request.body.password
+                    customerId: customerId,
+                    userType: "Customer",
+                    name: request.body.name,
+                    email: request.body.email,
+                    password: request.body.password,
                 };
                 //sending data to user model to create user
                 const userModel = new UserModel_1.UserModel();
@@ -106,7 +121,7 @@ class CustomerUserModel {
                     address,
                     contactNumber,
                     isCheckedIn: false,
-                    customerType: "Freemium",
+                    customerType: "Premium",
                     referenceCustomerTypeId: "",
                 });
                 yield customer.save();
@@ -118,7 +133,7 @@ class CustomerUserModel {
                         address,
                         contactNumber,
                         isCheckedIn: false,
-                        customerType: "Freemium",
+                        customerType: "Premium",
                         referenceCustomerTypeId: "",
                     },
                 });
@@ -129,20 +144,27 @@ class CustomerUserModel {
         });
     }
     //update customer
-    //only update address, contactnumber, email, password 
+    //only update address, contactnumber, email, password
     updateCustomer(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const customerId = request.params.customerId;
                 const { address, contactNumber, name, email, password } = request.body;
-                if (!customerId || !address || !contactNumber || !email || !password || !name)
-                    return response.status(400).json({ message: "Please fill all the fields" });
+                if (!customerId ||
+                    !address ||
+                    !contactNumber ||
+                    !email ||
+                    !password ||
+                    !name)
+                    return response
+                        .status(400)
+                        .json({ message: "Please fill all the fields" });
                 //find the user and update it in user collection
                 const userData = {
-                    "customerId": customerId,
-                    "name": name,
-                    "email": email,
-                    "password": password
+                    customerId: customerId,
+                    name: name,
+                    email: email,
+                    password: password,
                 };
                 const userModel = new UserModel_1.UserModel();
                 const userUpdateResponse = yield userModel.updateCustomerUser(userData);

@@ -36,6 +36,7 @@ const bodyParser = __importStar(require("body-parser"));
 const OrderModel_1 = require("./models/OrderModel");
 const CustomerUserModel_1 = require("./models/CustomerUserModel");
 const cors_1 = __importDefault(require("cors"));
+const ReservationModel_1 = require("./models/ReservationModel");
 // Class App which creates and configure the express application
 class App {
     // Constructor which runs the configuration on the express application and calls the routes function
@@ -46,6 +47,7 @@ class App {
         this.MenuItems = new MenuItemsModel_1.MenuItemsModel();
         this.Orders = new OrderModel_1.OrderModel();
         this.Customer = new CustomerUserModel_1.CustomerUserModel();
+        this.Reservation = new ReservationModel_1.ReservationModel();
         this.middleware();
         this.routes();
     }
@@ -140,6 +142,26 @@ class App {
         router.post("/updatecustomer/:customerId", (req, res) => {
             console.log("Update Customer:...");
             this.Customer.updateCustomer(req, res);
+        });
+        // post reservations
+        router.post("/addreservation", (request, response) => {
+            console.log("Adding New Reservation");
+            this.Reservation.createReservation(request, response);
+        });
+        // get reservations
+        router.get("/reservation", (request, response) => {
+            console.log("Query all reservations");
+            this.Reservation.getAllReservations(response);
+        });
+        // update reservation
+        router.patch("/reservation/:reservationId", (request, response) => {
+            console.log("Updating Reservation");
+            this.Reservation.updateReservation(request, response);
+        });
+        // delete reservation
+        router.delete("/reservation/:reservationId", (request, response) => {
+            console.log("Deleting Reservation");
+            this.Reservation.cancelReservation(request, response);
         });
         this.expressApp.use("/", router);
     }

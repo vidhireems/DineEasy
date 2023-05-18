@@ -48,7 +48,12 @@ class RestaurantModel {
     }
     // Function to create model for the reataurant interface and schema
     createModel() {
-        this.model = mongooseConnection.model("restaurant", this.schema);
+        if (!mongooseConnection.models.Restaurant) {
+            this.model = mongooseConnection.model("Restaurant", this.schema);
+        }
+        else {
+            this.model = mongooseConnection.models.Restaurant;
+        }
     }
     // Function for retrieving all the restaurants(have to use promise after mongoose version 6)
     retrieveAllRestaurants(response) {

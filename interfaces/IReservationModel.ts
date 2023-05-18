@@ -1,14 +1,14 @@
 //imports
-import Mongoose from 'mongoose';
+import Mongoose from "mongoose";
 
 //Interface for restaurant model
 interface IReservationModel extends Mongoose.Document {
-    id: String;
-    time: String;
-    peopleCount: Number;
-    status: String;
-    CheckInTime: String;
-    PremCustomerId: String;
-    RestaurantId: String;
+  reservationId: String;
+  customerId: String;
+  resId: String;
+  peopleCount: Number;
+  status: String;
+  checkInTime: Date;
+  tableNumber: Number;
 }
-export {IReservationModel};
+export { IReservationModel };
