@@ -23,7 +23,7 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "c8 mocha --exit"
   },
   "repository": {
     "type": "git",
@@ -38,6 +38,15 @@
   "devDependencies": {
     "@types/cors": "^2.8.13",
     "@types/uuid": "^9.0.1",
-    "mocha": "^10.2.0"
+    "istanbul": "^0.4.5",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "ts-node": "^10.9.1"
+  },
+  "nyc": {
+    "all": true,
+    "include": ["./**/*.js"],
+    "reporter": ["text", "lcov"],
+    "extension": [".js"]
   }
 }

@@ -1,4 +1,5 @@
 var chai = require('chai');
+const fs = require('../App.js');
 var chaiHttp = require('chai-http');
 var async = require('async');
 
