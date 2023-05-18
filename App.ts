@@ -108,8 +108,6 @@ class App {
       }
     );
 
-    // post- createorder
-
     // Create menu Items
     router.post(
       "/restaurants/:resId/menu/:menuId/items",
@@ -134,8 +132,8 @@ class App {
       }
     );
 
-    // post order
-    router.post("/orders", (request: any, response: any) => {
+    // post order - figure out the route
+    router.post("/order/:resId", (request: any, response: any) => {
       this.Orders.createOrder(request, response);
     });
 

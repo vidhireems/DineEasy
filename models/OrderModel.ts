@@ -21,9 +21,18 @@ class OrderModel {
         orderId: String,
         resId: String,
         customerId: String,
-        orderDate: Date,
-        status: String,
-        orderType: String,
+        orderDate: {
+          type: Date,
+          default: Date.now
+        },
+        status: {
+          type: String,
+          default: "Received"
+        },
+        orderType: {
+          type: String,
+          default: "Normal"
+        },
         quantity: Number,
         itemIds: [String],
       },
@@ -35,36 +44,46 @@ class OrderModel {
     this.model = mongooseConnection.model<IOrderModel>("order", this.schema);
   }
 
-  //post create order 
+  //post create order complete this 
   public async createOrder(request: any, response: any): Promise<any> {
     try {
       const orderId = uuidv4();
-      const { restaurantId, name, quantity, itemName } = request.body;
-      if (!restaurantId || !name || !quantity || !itemName) {
+      const restaurantId = request.params.resId;
+      const { customerId, orderDate, status, orderType, quantity, itemIds } = request.body;
+  
+      // Check if all required fields are provided
+      if (!customerId || !status || !orderType || !quantity || !itemIds) {
         return response.status(400).json({ message: "Please fill all fields" });
       }
+  
       const order = new this.model({
-        restaurantId,
         orderId,
-        name,
+        resId: restaurantId,
+        customerId,
+        orderDate: Date.now,
+        status: "Received",
+        orderType: "Normal",
         quantity,
-        itemName,
+        itemIds,
       });
+  
       await order.save();
+  
       response.status(200).json({
         message: "Order placed successfully",
         order: {
           orderId,
-          restaurantId,
-          name,
+          resId: restaurantId,
+          customerId,
+          orderDate,
+          status,
+          orderType,
           quantity,
-          itemName,
+          itemIds,
         },
       });
-      // console.log(response);
     } catch (error) {
       console.error(error);
-      console.log(error);
       response.sendStatus(500);
     }
   }
