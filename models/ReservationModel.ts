@@ -92,7 +92,7 @@ class ReservationModel {
     }
   }
   // add reservation
-  public async createReservation(request: any, response: any): Promise<any> {
+public async createReservation(request: any, response: any): Promise<any> {
     try {
       const reservationId = uuidv4();
       const { resId, customerId, checkInTime, peopleCount, status } =
@@ -100,7 +100,7 @@ class ReservationModel {
       if (!resId || !customerId || !checkInTime || !peopleCount || !status) {
         return response.status(400).json({ message: "Please fill all fields" });
       }
-
+  
       const restaurant = await this.restaurantModel.model.findOne({ resId });
       if (!restaurant) {
         return response.status(404).json({ message: "Restaurant not found" });
@@ -110,15 +110,36 @@ class ReservationModel {
           .status(400)
           .json({ message: "Cannot reserve. No tables available" });
       }
-
+  
       const customer = await this.customeruserModel.model.findOne({
         customerId,
       });
       if (!customer) {
         return response.status(404).json({ message: "Customer not found" });
       }
-
-      const tableNumber = getRandomInt(1, restaurant.numberOfTables);
+  
+      let tableNumber = getRandomInt(1, restaurant.numberOfTables);
+      const maxAttempts = restaurant.numberOfTables;
+      let attempts = 0;
+      while (attempts < maxAttempts) {
+        const existingReservation = await this.model.findOne({
+          resId,
+          tableNumber,
+          status: { $ne: "canceled" },
+        });
+        if (!existingReservation) {
+          break;
+        }
+        tableNumber = getRandomInt(1, restaurant.numberOfTables);
+        attempts++;
+      }
+  
+      if (attempts === maxAttempts) {
+        return response
+          .status(400)
+          .json({ message: "Cannot reserve. No tables available" });
+      }
+  
       const reservation = new this.model({
         customerId,
         reservationId,
@@ -129,10 +150,10 @@ class ReservationModel {
         tableNumber,
       });
       await reservation.save();
-
+  
       restaurant.numberOfTables -= 1;
       await restaurant.save();
-
+  
       response.status(200).json({
         message: "Reservation created successfully",
         reservation: {
@@ -199,17 +220,23 @@ class ReservationModel {
   public async cancelReservation(request: any, response: any): Promise<any> {
     try {
       const { reservationId } = request.params;
-
+  
       const canceledReservation = await this.model.findOneAndUpdate(
         { reservationId },
         { status: "canceled" },
         { new: true }
-      );
-
+      ).select("resId");
+  
       if (!canceledReservation) {
         return response.status(404).json({ message: "Reservation not found" });
       }
-
+  
+      const RestaurantModel = Mongoose.model("Restaurant"); // Assuming the name of the Restaurant model is "Restaurant"
+      await RestaurantModel.updateOne(
+        { resId: canceledReservation.resId },
+        { $inc: { numberOfTables: 1 } }
+      );
+  
       return response.status(200).json({
         message: "Reservation canceled successfully",
         reservation: canceledReservation,
