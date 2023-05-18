@@ -3,10 +3,13 @@ import Mongoose from 'mongoose';
 
 //Interface for order model
 interface IOrderModel extends Mongoose.Document {
+    orderId: String;
     resId: String;
-    orderId: Number;
-    name: String;
-    quantity: Number;
+    CustomerId: String;
+    Date: Date;
+    status: String;
+    orderType: String;
+    quantity: number
     itemName: [String];
 }
 export {IOrderModel};
