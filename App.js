@@ -136,7 +136,8 @@ class App {
             this.MenuItems.updateMenuItems(req, res);
         });
         // post order - figure out the route
-        router.post("/restaurant/:resId/order", (request, response) => {
+        router.post("/restaurants/:resId/menu/:menuid/items/order", (request, response) => {
+            console.log("posting order");
             this.Orders.createOrder(request, response);
         });
         // post- create customer

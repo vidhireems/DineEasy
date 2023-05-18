@@ -49,8 +49,9 @@ class OrderModel {
     try {
       const orderId = uuidv4();
       const restaurantId = request.params.resId;
+      console.log(orderId, restaurantId);
       const { customerId, quantity, itemIds } = request.body;
-  
+      console.log({ customerId, quantity, itemIds });
       // Check if all required fields are provided
       if (!customerId || !quantity || !itemIds) {
         return response.status(400).json({ message: "Please fill all fields" });

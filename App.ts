@@ -98,9 +98,7 @@ class App {
     });
 
     //Retrieve Menu Items
-    router.get(
-      "/restaurants/:resId/menu/:menuId/items",
-      (req: any, res: any) => {
+    router.get("/restaurants/:resId/menu/:menuId/items", (req: any, res: any) => {
         var resId = req.params.resId;
         var menuId = req.params.menuId;
         console.log("Query single menu of menu id: " + menuId + " with restid: " + resId);
@@ -125,23 +123,20 @@ class App {
     );
 
     // Delete menu Items
-    router.delete(
-      "/restaurants/:resId/menu/:menuId/items",
-      (req: any, res: any) => {
+    router.delete( "/restaurants/:resId/menu/:menuId/items", (req: any, res: any) => {
         this.MenuItems.deleteMenuItems(req, res);
       }
     );
 
     // update menu Items
-    router.patch(
-      "/restaurants/:resId/menu/:menuId/items",
-      (req: any, res: any) => {
+    router.patch( "/restaurants/:resId/menu/:menuId/items", (req: any, res: any) => {
         this.MenuItems.updateMenuItems(req, res);
       }
     );
 
     // post order - figure out the route
-    router.post("/restaurant/:resId/order", (request: any, response: any) => {
+    router.post("/restaurants/:resId/menu/:menuid/items/order", (request: any, response: any) => {
+      console.log("posting order");
       this.Orders.createOrder(request, response);
     });
 
@@ -157,26 +152,29 @@ class App {
       this.Customer.updateCustomer(req, res);
     });
 
-      // post reservations
-      router.post("/addreservation", (request, response) => {
-        console.log("Adding New Reservation");
-        this.Reservation.createReservation(request, response);
-      });
-      // get reservations
-      router.get("/reservation", (request, response) => {
-        console.log("Query all reservations");
-        this.Reservation.getAllReservations(response);
-      });
-      // update reservation
-      router.patch("/reservation/:reservationId", (request, response) => {
-        console.log("Updating Reservation");
-        this.Reservation.updateReservation(request, response);
-      });
-      // delete reservation
-      router.delete("/reservation/:reservationId", (request, response) => {
-        console.log("Deleting Reservation");
-        this.Reservation.cancelReservation(request, response);
-      })
+    // post reservations
+    router.post("/addreservation", (request, response) => {
+      console.log("Adding New Reservation");
+      this.Reservation.createReservation(request, response);
+    });
+
+    // get reservations
+    router.get("/reservation", (request, response) => {
+      console.log("Query all reservations");
+      this.Reservation.getAllReservations(response);
+    });
+
+    // update reservation
+    router.patch("/reservation/:reservationId", (request, response) => {
+      console.log("Updating Reservation");
+      this.Reservation.updateReservation(request, response);
+    });
+
+    // delete reservation
+    router.delete("/reservation/:reservationId", (request, response) => {
+      console.log("Deleting Reservation");
+      this.Reservation.cancelReservation(request, response);
+    })
 
     this.expressApp.use("/", router);
   }
