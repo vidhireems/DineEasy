@@ -5,8 +5,8 @@ import Mongoose from 'mongoose';
 interface IOrderModel extends Mongoose.Document {
     orderId: String;
     resId: String;
-    CustomerId: String;
-    Date: Date;
+    customerId: String;
+    orderDate: Date;
     status: String;
     orderType: String;
     quantity: Number;

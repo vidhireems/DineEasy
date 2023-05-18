@@ -18,19 +18,14 @@ class OrderModel {
   public createSchema(): void {
     this.schema = new Mongoose.Schema(
       {
-        restaurantId: {
-          type: Mongoose.Schema.Types.ObjectId,
-          ref: "restaurant",
-        },
-        orderId: {
-          type: String,
-          required: true,
-          unique: true,
-        },
-        name: String,
+        orderId: String,
+        resId: String,
+        customerId: String,
+        orderDate: Date,
+        status: String,
+        orderType: String,
         quantity: Number,
-        itemName: [String],
-        //price
+        itemIds: [String],
       },
       { collection: "order", timestamps: true }
     );
@@ -40,6 +35,7 @@ class OrderModel {
     this.model = mongooseConnection.model<IOrderModel>("order", this.schema);
   }
 
+  //post create order 
   public async createOrder(request: any, response: any): Promise<any> {
     try {
       const orderId = uuidv4();
@@ -72,5 +68,7 @@ class OrderModel {
       response.sendStatus(500);
     }
   }
+
+  // delete order
 }
 export { OrderModel };
