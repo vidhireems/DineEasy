@@ -112,10 +112,15 @@ class App {
     );
 
     // Create menu Items
-    router.post(
-      "/restaurants/:resId/menu/:menuId/items",
-      (req: any, res: any) => {
-        this.MenuItems.createMenuItems(req, res);
+    router.post("/restaurants/:resId/menu/:menuId/items", (req: any, res: any) => {
+      console.log("In post menu item")
+        var resId = req.params.resId;
+        var menuId = req.params.menuId;
+        console.log(req.body);
+        this.MenuItems.createMenuItems(req, res, {
+          menuId: menuId,
+          resId: resId
+        });
       }
     );
 

@@ -110,7 +110,7 @@ class App {
         router.get("/restaurants/:resId/menu/:menuId/items", (req, res) => {
             var resId = req.params.resId;
             var menuId = req.params.menuId;
-            console.log("Query single menu of menu id: " + menuId + "with restid: " + resId);
+            console.log("Query single menu of menu id: " + menuId + " with restid: " + resId);
             this.MenuItems.retrieveMenuItems(res, {
                 menuId: menuId,
                 resId: resId,
@@ -118,7 +118,14 @@ class App {
         });
         // Create menu Items
         router.post("/restaurants/:resId/menu/:menuId/items", (req, res) => {
-            this.MenuItems.createMenuItems(req, res);
+            console.log("In post menu item");
+            var resId = req.params.resId;
+            var menuId = req.params.menuId;
+            console.log(req.body);
+            this.MenuItems.createMenuItems(req, res, {
+                menuId: menuId,
+                resId: resId
+            });
         });
         // Delete menu Items
         router.delete("/restaurants/:resId/menu/:menuId/items", (req, res) => {

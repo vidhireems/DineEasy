@@ -16,6 +16,7 @@ exports.MenuItemsModel = void 0;
 //Imports
 const mongoose_1 = __importDefault(require("mongoose"));
 const DbConnection_1 = require("../DbConnection");
+const uuid_1 = require("uuid");
 //Mongoose connections and object
 let mongooseConnection = DbConnection_1.DbConnection.mongooseConnection;
 let mongooseObj = DbConnection_1.DbConnection.mongooseInstance;
@@ -33,6 +34,7 @@ class MenuItemsModel {
             resId: String,
             menu: [
                 {
+                    itemId: String,
                     category: String,
                     name: String,
                     price: Number,
@@ -65,24 +67,29 @@ class MenuItemsModel {
         });
     }
     // Add menu items
-    createMenuItems(request, response) {
+    createMenuItems(request, response, data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { resId, menuId } = request.params;
-                const { menu } = request.body;
+                const itemId = (0, uuid_1.v4)();
+                request.body.itemId = itemId;
+                const { resId, menuId } = data;
+                const menu = request.body;
+                console.log(menu);
                 if (!resId || !menuId || !menu) {
                     return response.status(400).json({ message: "Please fill all fields" });
                 }
-                //TODO: If menu id not present in menu db then handle the exception
                 let menuItems = yield this.model.findOne({ resId, menuId });
                 if (menuItems) {
-                    menuItems.menu.push(...menu);
+                    if (!menuItems.menu || !Array.isArray(menuItems.menu)) {
+                        menuItems.menu = [];
+                    }
+                    menuItems.menu.push(menu);
                 }
                 else {
                     menuItems = new this.model({
                         menuId,
                         resId,
-                        menu
+                        menu: [menu],
                     });
                 }
                 yield menuItems.save();
@@ -91,7 +98,7 @@ class MenuItemsModel {
                     menuItems: {
                         menuId,
                         resId,
-                        menu
+                        menu,
                     },
                 });
             }
@@ -101,6 +108,42 @@ class MenuItemsModel {
             }
         });
     }
+    // public async createMenuItems(request: any, response: any, data:any): Promise<any> {
+    //     try {
+    //         const itemId = uuidv4();
+    //         request.body.itemId = itemId;
+    //       const {resId, menuId} = data;
+    //       const  menu  = request.body;
+    //       console.log(menu);
+    //       if (!resId || !menuId || !menu) {
+    //         return response.status(400).json({ message: "Please fill all fields" });
+    //       }
+    //       //TODO: If menu id not present in menu db then handle the exception
+    //       let menuItems = await this.model.findOne({ resId, menuId });
+    //       if (menuItems) {
+    //         menuItems.menu.push(...menu);
+    //       }
+    //       else {
+    //         menuItems = new this.model({
+    //                 menuId,
+    //                 resId,
+    //                 menu,
+    //             });  
+    //       }
+    //       await menuItems.save();
+    //       response.status(200).json({
+    //         message: "Menu items successfully added",
+    //         menuItems: {
+    //             menuId,
+    //             resId,
+    //             menu
+    //         },
+    //       });
+    //     } catch (error) {
+    //       console.error(error);
+    //       response.status(500).json({ message: "Internal server error while creating menu items" });
+    //     }
+    //   }
     // Delete Menu item
     deleteMenuItems(request, response) {
         return __awaiter(this, void 0, void 0, function* () {

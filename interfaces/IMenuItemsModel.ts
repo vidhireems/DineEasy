@@ -5,6 +5,7 @@ interface IMenuItemsModel extends Mongoose.Document {
     menuId: String
     resId: String
     menu: [ {
+            itemId: String;
             category: String;
             name: String;
             price: number;

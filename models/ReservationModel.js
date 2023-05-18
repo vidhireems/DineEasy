@@ -43,10 +43,16 @@ class ReservationModel {
             },
             customerId: String,
             resId: String,
+            date: Date,
+            time: String,
             peopleCount: Number,
-            status: String,
-            checkInTime: Date,
+            phoneNumber: String,
             tableNumber: Number,
+            status: {
+                type: String,
+                enum: ['confirmed', 'pending', 'cancelled'],
+                default: 'pending'
+            },
         }, { collection: "Reservation" });
     }
     //function to create model for the User interface and schema
@@ -92,12 +98,13 @@ class ReservationModel {
         });
     }
     // add reservation
+    // add reservation
     createReservation(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const reservationId = (0, uuid_1.v4)();
-                const { resId, customerId, checkInTime, peopleCount, status } = request.body;
-                if (!resId || !customerId || !checkInTime || !peopleCount || !status) {
+                const { resId, customerId, date, time, peopleCount, phoneNumber } = request.body;
+                if (!resId || !customerId || !date || !time || !peopleCount || !phoneNumber) {
                     return response.status(400).json({ message: "Please fill all fields" });
                 }
                 const restaurant = yield this.restaurantModel.model.findOne({ resId });
@@ -105,13 +112,9 @@ class ReservationModel {
                     return response.status(404).json({ message: "Restaurant not found" });
                 }
                 if (restaurant.numberOfTables <= 0) {
-                    return response
-                        .status(400)
-                        .json({ message: "Cannot reserve. No tables available" });
+                    return response.status(400).json({ message: "Cannot reserve. No tables available" });
                 }
-                const customer = yield this.customeruserModel.model.findOne({
-                    customerId,
-                });
+                const customer = yield this.customeruserModel.model.findOne({ customerId });
                 if (!customer) {
                     return response.status(404).json({ message: "Customer not found" });
                 }
@@ -131,17 +134,18 @@ class ReservationModel {
                     attempts++;
                 }
                 if (attempts === maxAttempts) {
-                    return response
-                        .status(400)
-                        .json({ message: "Cannot reserve. No tables available" });
+                    return response.status(400).json({ message: "Cannot reserve. No tables available" });
                 }
+                const checkInTime = new Date(`${date} ${time}`);
                 const reservation = new this.model({
                     customerId,
                     reservationId,
                     resId,
-                    checkInTime,
+                    date,
+                    time,
                     peopleCount,
-                    status,
+                    phoneNumber,
+                    status: "confirmed",
                     tableNumber,
                 });
                 yield reservation.save();
@@ -153,9 +157,11 @@ class ReservationModel {
                         reservationId,
                         customerId,
                         tableNumber,
-                        status,
-                        checkInTime,
+                        status: "confirmed",
+                        date,
+                        time,
                         peopleCount,
+                        phoneNumber,
                     },
                 });
             }
@@ -184,7 +190,7 @@ class ReservationModel {
     updateReservation(request, response) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { customerId, reservationId, peopleCount, checkInTime } = request.body;
+                const { customerId, reservationId, peopleCount, date, time } = request.body;
                 if (!reservationId || !customerId) {
                     return response
                         .status(400)
@@ -197,8 +203,11 @@ class ReservationModel {
                 if (peopleCount !== undefined) {
                     reservation.peopleCount = peopleCount;
                 }
-                if (checkInTime !== undefined) {
-                    reservation.checkInTime = checkInTime;
+                if (date !== undefined) {
+                    reservation.date = new Date(date);
+                }
+                if (time !== undefined) {
+                    reservation.time = time;
                 }
                 yield reservation.save();
                 response
