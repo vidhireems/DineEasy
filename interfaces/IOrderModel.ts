@@ -9,7 +9,7 @@ interface IOrderModel extends Mongoose.Document {
     Date: Date;
     status: String;
     orderType: String;
-    quantity: number
-    itemName: [String];
+    quantity: Number;
+    itemIds: [String];
 }
 export {IOrderModel};
