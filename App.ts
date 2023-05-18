@@ -103,7 +103,7 @@ class App {
       (req: any, res: any) => {
         var resId = req.params.resId;
         var menuId = req.params.menuId;
-        console.log("Query single menu with restid: " + resId);
+        console.log("Query single menu of menu id: " + menuId + " with restid: " + resId);
         this.MenuItems.retrieveMenuItems(res, {
           menuId: menuId,
           resId: resId,
