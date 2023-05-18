@@ -104,7 +104,7 @@ class ReservationModel {
             try {
                 const reservationId = (0, uuid_1.v4)();
                 const { resId, customerId, date, time, peopleCount, phoneNumber } = request.body;
-                if (!resId || !customerId || !date || !time || !peopleCount || !phoneNumber) {
+                if (!resId || !date || !time || !peopleCount || !phoneNumber) {
                     return response.status(400).json({ message: "Please fill all fields" });
                 }
                 const restaurant = yield this.restaurantModel.model.findOne({ resId });
@@ -114,10 +114,10 @@ class ReservationModel {
                 if (restaurant.numberOfTables <= 0) {
                     return response.status(400).json({ message: "Cannot reserve. No tables available" });
                 }
-                const customer = yield this.customeruserModel.model.findOne({ customerId });
-                if (!customer) {
-                    return response.status(404).json({ message: "Customer not found" });
-                }
+                // const customer = await this.customeruserModel.model.findOne({ customerId });
+                // if (!customer) {
+                //   return response.status(404).json({ message: "Customer not found" });
+                // }
                 let tableNumber = getRandomInt(1, restaurant.numberOfTables);
                 const maxAttempts = restaurant.numberOfTables;
                 let attempts = 0;
@@ -153,16 +153,14 @@ class ReservationModel {
                 yield restaurant.save();
                 response.status(200).json({
                     message: "Reservation created successfully",
-                    reservation: {
-                        reservationId,
-                        customerId,
-                        tableNumber,
-                        status: "confirmed",
-                        date,
-                        time,
-                        peopleCount,
-                        phoneNumber,
-                    },
+                    reservationId,
+                    customerId,
+                    tableNumber,
+                    status: "confirmed",
+                    date,
+                    time,
+                    peopleCount,
+                    phoneNumber,
                 });
             }
             catch (error) {
