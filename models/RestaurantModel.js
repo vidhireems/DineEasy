@@ -163,7 +163,7 @@ class RestaurantModel {
                 const resId = req.params.resId;
                 console.log(req.body);
                 const { name, image, location, rating, reviews, cost, cuisines, contact, neighborhood, hours, parkingdetails, isValetPark, numberOfTables } = req.body;
-                if (!name || !image || !location || !rating || !reviews || !cost || !cuisines || !contact || !neighborhood || !hours || !parkingdetails || !isValetPark || !numberOfTables) {
+                if (!name || !image || !location || !rating || !reviews || !cost || !cuisines || !contact || !neighborhood || !hours || !parkingdetails || !numberOfTables) {
                     return res.status(400).json({ message: "Please fill all fields" });
                 }
                 const updatedRestaurant = yield this.model.findOneAndUpdate({ resId }, {

@@ -74,7 +74,6 @@ class App {
         //Create restaurant
         router.post("/restaurants", (request, response) => {
             console.log("Creating restaurant");
-            //console.log(request.body);
             this.Restaurants.createRestaurant(request, response);
         });
         //Delete Restaurant
