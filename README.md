@@ -16,9 +16,13 @@ Compile:
 Run DB scripts:
     To test DB connection in localhost:
         node DbConnection.js --env localhost
-    To test DB connection in cloud:
+    To test DB connection in cloud db:
         node DbConnection.js
     To populate DB collections in localhost:
         node createDatabase.js --env localhost
-    To populate DB collections in cloud:
+    To populate DB collections in cloud db:
         node createDatabase.js
+    To run AppServer in localhost:
+        node AppServer.js --env localhost
+    To run AppServer in in cloud db:
+        node AppServer.js
