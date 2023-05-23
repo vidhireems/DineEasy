@@ -9,3 +9,16 @@ createUpdateDb.ts allows you to update the database automatically without the ne
 4. Ensure that all the files in the Createdb folder are present in createUpdateDb.ts.
 5. Compile createUpdateDb.ts using 'tsc createUpdateDb.ts'
 6. Run the auto-generated file createUpdateDb.js using 'node createUpdateDb.js'
+
+Compile:
+    tsc
+
+Run DB scripts:
+    To test DB connection in localhost:
+        node DbConnection.js --env localhost
+    To test DB connection in cloud:
+        node DbConnection.js
+    To populate DB collections in localhost:
+        node createDatabase.js --env localhost
+    To populate DB collections in cloud:
+        node createDatabase.js
