@@ -1,8 +1,5 @@
-// Connect to mongo
-const conn = new Mongo();
-
-// Connect to admin DB
-db = conn.getDB('admin');
+// Connect to dineEasy DB
+db = db.getSiblingDB('admin');
 
 // Check if the user already exists
 if (db.getUser("dbAdmin")) {

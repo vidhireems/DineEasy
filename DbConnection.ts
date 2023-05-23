@@ -20,6 +20,7 @@ class DbConnection {
 
     //function to connect to Mongo Db 
     static connect (): Mongoose.Connection {
+        
         if(this.mongooseInstance) return this.mongooseInstance;
         
 
