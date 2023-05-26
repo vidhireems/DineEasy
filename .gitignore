@@ -114,7 +114,7 @@ dist
 .serverless/
 
 # angular distribution directory
-.angularDist/
+angularDist/
 
 # FuseBox cache
 .fusebox/
