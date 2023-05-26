@@ -84,6 +84,7 @@ class OrderModel {
             }
             catch (error) {
                 console.error(error);
+                console.log(error);
                 response.sendStatus(500);
             }
         });
