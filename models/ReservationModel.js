@@ -104,7 +104,7 @@ class ReservationModel {
             try {
                 const reservationId = (0, uuid_1.v4)();
                 const { resId, customerId, date, time, peopleCount, phoneNumber } = request.body;
-                if (!resId || !customerId || !date || !time || !peopleCount || !phoneNumber) {
+                if (!resId || !date || !time || !peopleCount || !phoneNumber) {
                     return response.status(400).json({ message: "Please fill all fields" });
                 }
                 const restaurant = yield this.restaurantModel.model.findOne({ resId });
@@ -113,10 +113,6 @@ class ReservationModel {
                 }
                 if (restaurant.numberOfTables <= 0) {
                     return response.status(400).json({ message: "Cannot reserve. No tables available" });
-                }
-                const customer = yield this.customeruserModel.model.findOne({ customerId });
-                if (!customer) {
-                    return response.status(404).json({ message: "Customer not found" });
                 }
                 let tableNumber = getRandomInt(1, restaurant.numberOfTables);
                 const maxAttempts = restaurant.numberOfTables;
@@ -152,17 +148,14 @@ class ReservationModel {
                 restaurant.numberOfTables -= 1;
                 yield restaurant.save();
                 response.status(200).json({
-                    message: "Reservation created successfully",
-                    reservation: {
-                        reservationId,
-                        customerId,
-                        tableNumber,
-                        status: "confirmed",
-                        date,
-                        time,
-                        peopleCount,
-                        phoneNumber,
-                    },
+                    reservationId,
+                    customerId,
+                    tableNumber,
+                    status: "confirmed",
+                    date,
+                    time,
+                    peopleCount,
+                    phoneNumber,
                 });
             }
             catch (error) {
@@ -229,7 +222,7 @@ class ReservationModel {
                 if (!canceledReservation) {
                     return response.status(404).json({ message: "Reservation not found" });
                 }
-                const RestaurantModel = mongoose_1.default.model("Restaurant"); // Assuming the name of the Restaurant model is "Restaurant"
+                const RestaurantModel = mongoose_1.default.model("Restaurant");
                 yield RestaurantModel.updateOne({ resId: canceledReservation.resId }, { $inc: { numberOfTables: 1 } });
                 return response.status(200).json({
                     message: "Reservation canceled successfully",

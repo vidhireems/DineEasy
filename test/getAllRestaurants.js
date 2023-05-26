@@ -1,10 +1,9 @@
 var chai = require('chai');
+const fs = require('../App.js');
 var chaiHttp = require('chai-http');
 var async = require('async');
 
-var assert = chai.assert;
 var expect = chai.expect;
-var should = chai.should();
 
 var http = require('http');
 chai.use(chaiHttp);

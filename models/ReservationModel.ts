@@ -104,7 +104,7 @@ public async createReservation(request: any, response: any): Promise<any> {
     const reservationId = uuidv4();
     const { resId, customerId, date, time, peopleCount, phoneNumber } = request.body;
 
-    if (!resId || !customerId || !date || !time || !peopleCount || !phoneNumber) {
+    if (!resId || !date || !time || !peopleCount || !phoneNumber) {
       return response.status(400).json({ message: "Please fill all fields" });
     }
     const restaurant = await this.restaurantModel.model.findOne({ resId });
@@ -113,10 +113,6 @@ public async createReservation(request: any, response: any): Promise<any> {
     }
     if (restaurant.numberOfTables <= 0) {
       return response.status(400).json({ message: "Cannot reserve. No tables available" });
-    }
-    const customer = await this.customeruserModel.model.findOne({ customerId });
-    if (!customer) {
-      return response.status(404).json({ message: "Customer not found" });
     }
 
     let tableNumber = getRandomInt(1, restaurant.numberOfTables);
@@ -156,8 +152,6 @@ public async createReservation(request: any, response: any): Promise<any> {
     await restaurant.save();
 
     response.status(200).json({
-      message: "Reservation created successfully",
-      reservation: {
         reservationId,
         customerId,
         tableNumber,
@@ -166,15 +160,13 @@ public async createReservation(request: any, response: any): Promise<any> {
         time,
         peopleCount,
         phoneNumber,
-      },
-    });
+      });
   } catch (error) {
     console.error(error);
     response.sendStatus(500);
   }
 }
 
-  
   // get all reservations
   public async getAllReservations(response: any): Promise<any> {
     try {
@@ -240,7 +232,7 @@ public async createReservation(request: any, response: any): Promise<any> {
         return response.status(404).json({ message: "Reservation not found" });
       }
   
-      const RestaurantModel = Mongoose.model("Restaurant"); // Assuming the name of the Restaurant model is "Restaurant"
+      const RestaurantModel = Mongoose.model("Restaurant");
       await RestaurantModel.updateOne(
         { resId: canceledReservation.resId },
         { $inc: { numberOfTables: 1 } }
